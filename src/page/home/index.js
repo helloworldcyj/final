@@ -1,15 +1,15 @@
-import logo from '../../assets/avatar.jpg';
 import React, { PureComponent } from 'react';
 import { Link } from 'react-router-dom';
+import logo from '../../assets/avatar.jpg';
 import './index.scss';
 
-class Index extends PureComponent {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
+class Home extends PureComponent {
+    constructor(props) {
+        super(props);
+        this.state = {};
+    }
 
-  componentDidMount() {
+    componentDidMount() {
     let sakura_point_vsh = `
     uniform mat4 uProjection;
     uniform mat4 uModelview;
@@ -967,22 +967,21 @@ class Index extends PureComponent {
       //console.log("init background");
     }
     function renderBackground() {
-      gl.disable(gl.DEPTH_TEST);
+        gl.disable(gl.DEPTH_TEST);
 
-      useEffect(effectLib.sceneBg, null);
-      gl.uniform2f(
-        effectLib.sceneBg.program.uniforms.uTimes,
-        timeInfo.elapsed,
-        timeInfo.delta,
-      );
-      drawEffect(effectLib.sceneBg);
-      unuseEffect(effectLib.sceneBg);
+        useEffect(effectLib.sceneBg, null);
+        gl.uniform2f(
+            effectLib.sceneBg.program.uniforms.uTimes,
+            timeInfo.elapsed,
+            timeInfo.delta,
+        );
+        drawEffect(effectLib.sceneBg);
+        unuseEffect(effectLib.sceneBg);
 
-      gl.enable(gl.DEPTH_TEST);
+        gl.enable(gl.DEPTH_TEST);
     }
 
-    // post process
-    // var postProcess = {};
+
     function createPostProcess() {
       //console.log("create post process");
     }
@@ -991,252 +990,224 @@ class Index extends PureComponent {
     }
 
     function renderPostProcess() {
-      gl.enable(gl.TEXTURE_2D);
-      gl.disable(gl.DEPTH_TEST);
-      var bindRT = function(rt, isclear) {
-        gl.bindFramebuffer(gl.FRAMEBUFFER, rt.frameBuffer);
-        gl.viewport(0, 0, rt.width, rt.height);
-        if (isclear) {
-          gl.clearColor(0, 0, 0, 0);
-          gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-        }
-      };
+        // gl.enable(gl.TEXTURE_2D);
+        gl.disable(gl.DEPTH_TEST);
+        var bindRT = function(rt, isclear) {
+            gl.bindFramebuffer(gl.FRAMEBUFFER, rt.frameBuffer);
+            gl.viewport(0, 0, rt.width, rt.height);
+            if (isclear) {
+            gl.clearColor(0, 0, 0, 0);
+            gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+            }
+        };
 
-      //make bright buff
-      bindRT(renderSpec.wHalfRT0, true);
-      useEffect(effectLib.mkBrightBuf, renderSpec.mainRT);
-      drawEffect(effectLib.mkBrightBuf);
-      unuseEffect(effectLib.mkBrightBuf);
-
-      // make bloom
-      for (let i = 0; i < 2; i++) {
-        let p = 1.5 + 1 * i;
-        let s = 2.0 + 1 * i;
-        bindRT(renderSpec.wHalfRT1, true);
-        useEffect(effectLib.dirBlur, renderSpec.wHalfRT0);
-        gl.uniform4f(
-          effectLib.dirBlur.program.uniforms.uBlurDir,
-          p,
-          0.0,
-          s,
-          0.0,
-        );
-        drawEffect(effectLib.dirBlur);
-        unuseEffect(effectLib.dirBlur);
-
+        //make bright buff
         bindRT(renderSpec.wHalfRT0, true);
-        useEffect(effectLib.dirBlur, renderSpec.wHalfRT1);
-        gl.uniform4f(
-          effectLib.dirBlur.program.uniforms.uBlurDir,
-          0.0,
-          p,
-          0.0,
-          s,
+        useEffect(effectLib.mkBrightBuf, renderSpec.mainRT);
+        drawEffect(effectLib.mkBrightBuf);
+        unuseEffect(effectLib.mkBrightBuf);
+
+        // make bloom
+        for (let i = 0; i < 2; i++) {
+            let p = 1.5 + 1 * i;
+            let s = 2.0 + 1 * i;
+            bindRT(renderSpec.wHalfRT1, true);
+            useEffect(effectLib.dirBlur, renderSpec.wHalfRT0);
+            gl.uniform4f(
+                effectLib.dirBlur.program.uniforms.uBlurDir,
+                p,
+                0.0,
+                s,
+                0.0,
+            );
+            drawEffect(effectLib.dirBlur);
+            unuseEffect(effectLib.dirBlur);
+
+            bindRT(renderSpec.wHalfRT0, true);
+            useEffect(effectLib.dirBlur, renderSpec.wHalfRT1);
+            gl.uniform4f(
+                effectLib.dirBlur.program.uniforms.uBlurDir,
+                0.0,
+                p,
+                0.0,
+                s,
+            );
+            drawEffect(effectLib.dirBlur);
+            unuseEffect(effectLib.dirBlur);
+        }
+
+            //display
+            gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+            gl.viewport(0, 0, renderSpec.width, renderSpec.height);
+            gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+
+            useEffect(effectLib.finalComp, renderSpec.mainRT);
+            gl.uniform1i(effectLib.finalComp.program.uniforms.uBloom, 1);
+            gl.activeTexture(gl.TEXTURE1);
+            gl.bindTexture(gl.TEXTURE_2D, renderSpec.wHalfRT0.texture);
+            drawEffect(effectLib.finalComp);
+            unuseEffect(effectLib.finalComp);
+
+            gl.enable(gl.DEPTH_TEST);
+        }
+
+        /////
+        // var SceneEnv = {};
+        function createScene() {
+            createEffectLib();
+            createBackground();
+            createPointFlowers();
+            createPostProcess();
+            sceneStandBy = true;
+        }
+
+        function initScene() {
+            initBackground();
+            initPointFlowers();
+            initPostProcess();
+
+        //camera.position.z = 17.320508;
+        camera.position.z = pointFlower.area.z + projection.nearfar[0];
+        projection.angle =
+            ((Math.atan2(
+            pointFlower.area.y,
+            camera.position.z + pointFlower.area.z,
+            ) *
+            180.0) /
+            Math.PI) *
+            2.0;
+        Matrix44.loadProjection(
+            projection.matrix,
+            renderSpec.aspect,
+            projection.angle,
+            projection.nearfar[0],
+            projection.nearfar[1],
         );
-        drawEffect(effectLib.dirBlur);
-        unuseEffect(effectLib.dirBlur);
-      }
-
-      //display
-      gl.bindFramebuffer(gl.FRAMEBUFFER, null);
-      gl.viewport(0, 0, renderSpec.width, renderSpec.height);
-      gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-
-      useEffect(effectLib.finalComp, renderSpec.mainRT);
-      gl.uniform1i(effectLib.finalComp.program.uniforms.uBloom, 1);
-      gl.activeTexture(gl.TEXTURE1);
-      gl.bindTexture(gl.TEXTURE_2D, renderSpec.wHalfRT0.texture);
-      drawEffect(effectLib.finalComp);
-      unuseEffect(effectLib.finalComp);
-
-      gl.enable(gl.DEPTH_TEST);
-    }
-
-    /////
-    // var SceneEnv = {};
-    function createScene() {
-      createEffectLib();
-      createBackground();
-      createPointFlowers();
-      createPostProcess();
-      sceneStandBy = true;
-    }
-
-    function initScene() {
-      initBackground();
-      initPointFlowers();
-      initPostProcess();
-
-      //camera.position.z = 17.320508;
-      camera.position.z = pointFlower.area.z + projection.nearfar[0];
-      projection.angle =
-        ((Math.atan2(
-          pointFlower.area.y,
-          camera.position.z + pointFlower.area.z,
-        ) *
-          180.0) /
-          Math.PI) *
-        2.0;
-      Matrix44.loadProjection(
-        projection.matrix,
-        renderSpec.aspect,
-        projection.angle,
-        projection.nearfar[0],
-        projection.nearfar[1],
-      );
     }
 
     function renderScene() {
-      //draw
-      Matrix44.loadLookAt(
-        camera.matrix,
-        camera.position,
-        camera.lookat,
-        camera.up,
-      );
+        //draw
+        Matrix44.loadLookAt(
+            camera.matrix,
+            camera.position,
+            camera.lookat,
+            camera.up,
+        );
 
-      gl.enable(gl.DEPTH_TEST);
+        gl.enable(gl.DEPTH_TEST);
 
-      //gl.bindFramebuffer(gl.FRAMEBUFFER, null);
-      gl.bindFramebuffer(gl.FRAMEBUFFER, renderSpec.mainRT.frameBuffer);
-      gl.viewport(0, 0, renderSpec.mainRT.width, renderSpec.mainRT.height);
-      gl.clearColor(0.005, 0, 0.05, 0);
-      gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+        //gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+        gl.bindFramebuffer(gl.FRAMEBUFFER, renderSpec.mainRT.frameBuffer);
+        gl.viewport(0, 0, renderSpec.mainRT.width, renderSpec.mainRT.height);
+        gl.clearColor(0.005, 0, 0.05, 0);
+        gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-      renderBackground();
-      renderPointFlowers();
-      renderPostProcess();
+        renderBackground();
+        renderPointFlowers();
+        renderPostProcess();
     }
 
-    /////
-    function onResize(e) {
-      makeCanvasFullScreen(document.getElementById('sakura'));
-      setViewports();
-      if (sceneStandBy) {
+        function onResize(e) {
+            makeCanvasFullScreen(document.getElementById('sakura'));
+            setViewports();
+            if (sceneStandBy) {
+                initScene();
+            }
+        }
+
+        function setViewports() {
+            renderSpec.setSize(gl.canvas.width, gl.canvas.height);
+
+            gl.clearColor(0.2, 0.2, 0.5, 1.0);
+            gl.viewport(0, 0, renderSpec.width, renderSpec.height);
+
+            var rtfunc = function(rtname, rtw, rth) {
+                var rt = renderSpec[rtname];
+                if (rt) deleteRenderTarget(rt);
+                renderSpec[rtname] = createRenderTarget(rtw, rth);
+            };
+            rtfunc('mainRT', renderSpec.width, renderSpec.height);
+            rtfunc('wFullRT0', renderSpec.width, renderSpec.height);
+            rtfunc('wFullRT1', renderSpec.width, renderSpec.height);
+            rtfunc('wHalfRT0', renderSpec.halfWidth, renderSpec.halfHeight);
+            rtfunc('wHalfRT1', renderSpec.halfWidth, renderSpec.halfHeight);
+        }
+
+        function render() {
+        renderScene();
+        }
+
+        var animating = true;
+   
+
+        function animate() {
+            var curdate = new Date();
+            timeInfo.elapsed = (curdate - timeInfo.start) / 1000.0;
+            timeInfo.delta = (curdate - timeInfo.prev) / 1000.0;
+            timeInfo.prev = curdate;
+
+        if (animating) requestAnimationFrame(animate);
+            render();
+        }
+
+        function makeCanvasFullScreen(canvas) {
+        if(!canvas) {
+            return;
+        }
+        var b = document.body;
+        var d = document.documentElement;
+        let fullw = Math.max(
+            b.clientWidth,
+            b.scrollWidth,
+            d.scrollWidth,
+            d.clientWidth,
+        );
+        let fullh = Math.max(
+            b.clientHeight,
+            b.scrollHeight,
+            d.scrollHeight,
+            d.clientHeight,
+        );
+        canvas.width = fullw;
+        canvas.height = fullh;
+        }
+
+        var canvas = document.getElementById('sakura');
+        try {
+        makeCanvasFullScreen(canvas);
+        gl = canvas.getContext('experimental-webgl');
+        } catch (e) {
+        alert('WebGL not supported.' + e);
+        console.error(e);
+        return;
+        }
+
+        window.addEventListener('resize', onResize);
+
+        setViewports();
+        createScene();
         initScene();
-      }
+
+        timeInfo.start = new Date();
+        timeInfo.prev = timeInfo.start;
+        animate();
+
+        //set window.requestAnimationFrame
+        (function(w, r) {
+        w['r' + r] =
+            w['r' + r] ||
+            w['webkitR' + r] ||
+            w['mozR' + r] ||
+            w['msR' + r] ||
+            w['oR' + r] ||
+            function(c) {
+            w.setTimeout(c, 1000 / 60);
+            };
+        })(window, 'equestAnimationFrame');
     }
-
-    function setViewports() {
-      renderSpec.setSize(gl.canvas.width, gl.canvas.height);
-
-      gl.clearColor(0.2, 0.2, 0.5, 1.0);
-      gl.viewport(0, 0, renderSpec.width, renderSpec.height);
-
-      var rtfunc = function(rtname, rtw, rth) {
-        var rt = renderSpec[rtname];
-        if (rt) deleteRenderTarget(rt);
-        renderSpec[rtname] = createRenderTarget(rtw, rth);
-      };
-      rtfunc('mainRT', renderSpec.width, renderSpec.height);
-      rtfunc('wFullRT0', renderSpec.width, renderSpec.height);
-      rtfunc('wFullRT1', renderSpec.width, renderSpec.height);
-      rtfunc('wHalfRT0', renderSpec.halfWidth, renderSpec.halfHeight);
-      rtfunc('wHalfRT1', renderSpec.halfWidth, renderSpec.halfHeight);
-    }
-
-    function render() {
-      renderScene();
-    }
-
-    var animating = true;
-    // function toggleAnimation(elm) {
-    //   animating ^= true;
-    //   if (animating) animate();
-    //   if (elm) {
-    //     elm.innerHTML = animating ? 'Stop' : 'Start';
-    //   }
-    // }
-
-    // function stepAnimation() {
-    //   if (!animating) animate();
-    // }
-
-    function animate() {
-      var curdate = new Date();
-      timeInfo.elapsed = (curdate - timeInfo.start) / 1000.0;
-      timeInfo.delta = (curdate - timeInfo.prev) / 1000.0;
-      timeInfo.prev = curdate;
-
-      if (animating) requestAnimationFrame(animate);
-      render();
-    }
-
-    function makeCanvasFullScreen(canvas) {
-      var b = document.body;
-      var d = document.documentElement;
-      let fullw = Math.max(
-        b.clientWidth,
-        b.scrollWidth,
-        d.scrollWidth,
-        d.clientWidth,
-      );
-      let fullh = Math.max(
-        b.clientHeight,
-        b.scrollHeight,
-        d.scrollHeight,
-        d.clientHeight,
-      );
-      canvas.width = fullw;
-      canvas.height = fullh;
-    }
-
-    // window.addEventListener('load', function(e) {
-    //   var canvas = document.getElementById('sakura');
-    //   try {
-    //     makeCanvasFullScreen(canvas);
-    //     gl = canvas.getContext('experimental-webgl');
-    //   } catch (e) {
-    //     alert('WebGL not supported.' + e);
-    //     console.error(e);
-    //     return;
-    //   }
-
-    //   window.addEventListener('resize', onResize);
-
-    //   setViewports();
-    //   createScene();
-    //   initScene();
-
-    //   timeInfo.start = new Date();
-    //   timeInfo.prev = timeInfo.start;
-    //   animate();
-    // });
-    var canvas = document.getElementById('sakura');
-    try {
-      makeCanvasFullScreen(canvas);
-      gl = canvas.getContext('experimental-webgl');
-    } catch (e) {
-      alert('WebGL not supported.' + e);
-      console.error(e);
-      return;
-    }
-
-    window.addEventListener('resize', onResize);
-
-    setViewports();
-    createScene();
-    initScene();
-
-    timeInfo.start = new Date();
-    timeInfo.prev = timeInfo.start;
-    animate();
-
-    //set window.requestAnimationFrame
-    (function(w, r) {
-      w['r' + r] =
-        w['r' + r] ||
-        w['webkitR' + r] ||
-        w['mozR' + r] ||
-        w['msR' + r] ||
-        w['oR' + r] ||
-        function(c) {
-          w.setTimeout(c, 1000 / 60);
-        };
-    })(window, 'equestAnimationFrame');
-  }
 
   render() {
+    
     return (
       <div className="home">
         <canvas id="sakura" />
@@ -1260,8 +1231,6 @@ class Index extends PureComponent {
                         关于
                     </Link>
                 </div>
-                
-                <div className="introduce"> 时光正好，未来可期，加油 ！ </div>
             </div>
         </div>
       </div>
@@ -1269,4 +1238,4 @@ class Index extends PureComponent {
   }
 }
 
-export default Index;
+export default Home;
