@@ -8,7 +8,7 @@ import './index.scss';
 class Sign extends PureComponent {
 
     constructor(props) {
-        this.props = props;
+        super(props);
         this.state = {
             signInModalVisible: false,
             signUpModalVisible: false

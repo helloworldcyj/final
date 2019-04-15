@@ -1,13 +1,15 @@
-.App {
-  text-align: center;
+html, body, #root {
+  height: 100%;
 }
+
+/* iconmoon */
 @font-face {
   font-family: 'icomoon';
-  src:  url('./assets/fonts/icomoon.eot?5i4j4c');
-  src:  url('./assets/fonts/icomoon.eot?5i4j4c#iefix') format('embedded-opentype'),
-    url('./assets/fonts/icomoon.ttf?5i4j4c') format('truetype'),
-    url('./assets/fonts/icomoon.woff?5i4j4c') format('woff'),
-    url('./assets/fonts/icomoon.svg?5i4j4c#icomoon') format('svg');
+  src:  url('./assets/fonts/icomoon.eot?6eibpj');
+  src:  url('./assets/fonts/icomoon.eot?6eibpj#iefix') format('embedded-opentype'),
+    url('./assets/fonts/icomoon.ttf?6eibpj') format('truetype'),
+    url('./assets/fonts/icomoon.woff?6eibpj') format('woff'),
+    url('./assets/fonts/icomoon.svg?6eibpj#icomoon') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -27,25 +29,86 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-like:before {
+  content: "\e900";
+}
 .icon-about:before {
   content: "\e904";
 }
 .icon-message:before {
-  content: "\e900";
-}
-.icon-timeline:before {
   content: "\e901";
 }
-.icon-article:before {
+.icon-timeline:before {
   content: "\e902";
 }
-.icon-home:before {
+.icon-article:before {
   content: "\e903";
+}
+.icon-home:before {
+  content: "\e905";
 }
 .icon-archive:before {
   content: "\e930";
 }
-
-html, body, #root {
-  height: 100%;
+.icon-tags:before {
+  content: "\e936";
 }
+.icon-eye:before {
+  content: "\e9ce";
+}
+/* iconmoon */
+
+/*对 markdown 样式的补充*/
+pre {
+  display: block;
+  padding: 10px;
+  margin: 0 0 10px;
+  font-size: 14px;
+  line-height: 1.42857143;
+  color: #abb2bf;
+  background: #282c34;
+  word-break: break-all;
+  word-wrap: break-word;
+  overflow: auto;
+}
+h1,h2,h3,h4,h5,h6{
+  margin-top: 1em;
+  /* margin-bottom: 1em; */
+}
+strong {
+  font-weight: bold;
+}
+
+p > code:not([class]) {
+  padding: 2px 4px;
+  font-size: 90%;
+  color: #c7254e;
+  background-color: #f9f2f4;
+  border-radius: 4px;
+}
+p img{
+  /* 图片居中 */
+  margin: 0 auto;
+  display: flex;
+}
+
+#content {
+  font-family: "Microsoft YaHei",  'sans-serif';
+  font-size: 16px;
+  line-height: 30px;
+}
+
+#content .desc ul,#content .desc ol {
+  color: #333333;
+  margin: 1.5em 0 0 25px;
+}
+
+#content .desc h1, #content .desc h2 {
+  border-bottom: 1px solid #eee;
+  padding-bottom: 10px;
+}
+
+#content .desc a {
+  color: #009a61;
+}
+/*对 markdown 样式的补充*/

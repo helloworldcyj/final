@@ -1,0 +1,89 @@
+$size: 160px;
+
+@mixin cube($w) {
+    content: '';
+    position: absolute;
+    width: $w;
+    height: $w;
+}
+
+@mixin highlight ($w) {
+    position: absolute;
+    width: $w;
+    height: $w;
+    left: -$w;
+    top: 0;
+    background: linear-gradient(90deg, transparent 15%,  #fff);
+    clip-path: polygon(50% 0, 100% 0%, 50% 100%, 0% 100%);
+    z-index: 3;
+}
+
+@mixin keyframes($animationName) {
+    @-webkit-keyframes #{$animationName} {
+        @content;
+    }
+    @-moz-keyframes #{$animationName} {
+        @content;
+    }
+    @-o-keyframes #{$animationName} {
+        @content;
+    }
+    @keyframes #{$animationName} {
+        @content;
+    }
+}
+
+@include keyframes(highlightKeyframes) {
+    0%   { 
+        transform: translateX(-$size);
+    }
+    27.27% {
+        transform: translateX(-$size);
+    }
+    72.73% {
+        transform: translateX(2 * $size);
+    }
+    100% { 
+        transform: translateX(2 * $size);
+    }
+}
+
+@include keyframes(heartbeat) {
+    0%   { 
+        transform: scale(1);
+    }
+    27.27% {
+        transform: scale(1.2);
+    }
+    72.73% {
+        transform: scale(1.2);
+    }
+    100% { 
+        transform: scale(1);
+    }
+}
+
+
+.user-headpic {
+    position: relative;
+    display: block;
+    width: $size;
+    height: $size;
+    background: 
+        url('../../assets/avatar.jpg')
+        center/cover
+        no-repeat;
+    border-radius: 100%;
+    border: 2px solid silver;
+    overflow: hidden;
+    &:after {
+        @include cube($size);
+        @include highlight($size);
+    }
+    &.starring {
+        animation: heartbeat 2s linear infinite;
+        &:after {
+            animation: highlightKeyframes 2s linear infinite;
+        }
+    }
+}

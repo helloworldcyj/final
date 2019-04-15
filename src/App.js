@@ -22,6 +22,8 @@ import Message from './page/Message';
 import About from './page/About';
 import MainLayout from './layout/MainLayout';
 import 'antd/dist/antd.css';
+import 'highlight.js/styles/default.css';
+import ArticleDetail from './page/ArticleDetail';
 
 const sagaMiddleware = createSagaMiddleware();
 let storeEnhancers;
@@ -71,7 +73,8 @@ class App extends Component {
             <BrowserRouter>
                 <Switch>
                     <Route path={CONFIGS.home.path} component={Home} exact={true} />    
-                    <Route path={CONFIGS.notFound.path} component={NotFound} />    
+                    <Route path={CONFIGS.notFound.path} component={NotFound} /> 
+                    <Route path={CONFIGS.articleDetail.path} component={ArticleDetail}/>
                     {_.map(ROUTES, (item, index) => (
                         <MainLayout key={index} path={item.path} component={item.component} />      
                     ))}

@@ -23,6 +23,9 @@ export const CONFIGS  = {
         path: '/about',
         display: '关于'
     },
+    articleDetail: {
+        path: '/articleDetail'
+    },
     notFound: {
         path: '/404'
     }
