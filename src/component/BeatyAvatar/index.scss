@@ -81,7 +81,7 @@ $size: 160px;
         @include highlight($size);
     }
     &.starring {
-        animation: heartbeat 2s linear infinite;
+        animation: heartbeat 4s linear infinite;
         &:after {
             animation: highlightKeyframes 2s linear infinite;
         }

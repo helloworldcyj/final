@@ -1,9 +1,10 @@
 import React, { PureComponent } from 'react';
 import { withRouter } from 'react-router-dom';
 import _ from 'lodash';
-import './index.scss';
 import ArticleListItem from '../../component/ArticleListItem';
-import { CONFIGS } from '../../configs';
+import { CONFIGS, TAG_NAME } from '../../configs';
+import { getQueryStringByName } from '../../utils/utils';
+import './index.scss';
 
 const TEMP = [
     {
@@ -31,13 +32,30 @@ const TEMP = [
 
 class Article extends PureComponent {
 
+
+
+    componentDidUpdate() {
+        const { location } = this.props;
+        console.log('location: ', location);
+    }
+
     handleClick = (item) => {
         const { history } = this.props;
         history.push(`${CONFIGS.articleDetail.path}?article_id=${item.key}`)
     }
 
     render() {
-        return _.map(TEMP, (item, index) => <ArticleListItem item={item} onClick={this.handleClick} key={index} />)
+        // const {} = this.props;
+        const currentTagName = decodeURI(getQueryStringByName(TAG_NAME));
+        return (
+            <div className="article">
+                { currentTagName 
+                    ? <div className="article-tag-name-about">{currentTagName}  相关的文章: </div>
+                    : null
+                }
+                {_.map(TEMP, (item, index) => <ArticleListItem item={item} onClick={this.handleClick} key={index} />)}
+            </div>
+        );
     }
 }
 

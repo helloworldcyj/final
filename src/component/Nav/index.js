@@ -41,7 +41,7 @@ class Nav extends PureComponent {
             <div className='nav'>
                 {/* <div className="name">陈阳吉的个人主页</div> */}
                 {_.map(LINKS, (item, index) => (
-                    <NavLink  activeClassName='link-active' className='link' to={item.path} key={index} exact={true}>
+                    <NavLink activeClassName='link-active' className='link' to={item.path} key={index} exact={true}>
                     <i className={`icon ${item.icon}`}></i>
                     {item.display}
                     </NavLink>

@@ -28,5 +28,10 @@ export const CONFIGS  = {
     },
     notFound: {
         path: '/404'
+    },
+    admin: {
+        path: '/admin'
     }
 }
+
+export const TAG_NAME = 'tag_name';

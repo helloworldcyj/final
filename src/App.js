@@ -24,6 +24,7 @@ import MainLayout from './layout/MainLayout';
 import 'antd/dist/antd.css';
 import 'highlight.js/styles/default.css';
 import ArticleDetail from './page/ArticleDetail';
+import Admin from './page/Admin';
 
 const sagaMiddleware = createSagaMiddleware();
 let storeEnhancers;
@@ -78,6 +79,7 @@ class App extends Component {
                     {_.map(ROUTES, (item, index) => (
                         <MainLayout key={index} path={item.path} component={item.component} />      
                     ))}
+                    <Route path={CONFIGS.admin.path} component={Admin}/>
                     <Redirect from='*' to={CONFIGS.notFound.path} />
                 </Switch>
             </BrowserRouter>

@@ -4,6 +4,7 @@ import Nav from '../../component/Nav';
 import './index.scss';
 import Footer from '../../component/Footer';
 import BeautyAvatar from '../../component/BeatyAvatar';
+import ArticleTags from '../../component/ArticleTags';
 
 
 class MainLayout extends PureComponent {
@@ -18,7 +19,13 @@ class MainLayout extends PureComponent {
                             <Route path={path} component={component} />
                         </div>
                         <div className="body-right">
-                            <BeautyAvatar/>
+                            <div className="name-avatar">
+                                <div className="avatar-wrapper">
+                                    <BeautyAvatar/>
+                                </div>
+                                <div className="name">陈阳吉</div>
+                            </div>
+                            <ArticleTags />
                         </div>
                     </div>
                     <Footer/>
