@@ -1,9 +1,22 @@
 .admin {
     height: 100%;
     overflow: hidden;
-}
-.login-form {
-    .ant-btn {
-        width: 100%;
+    .content {
+       height: 100%;
+       .ant-tabs { 
+           height: 100%;
+           &-bar {
+               width: 160px;
+            }
+            &-tab {
+                text-align: center;
+            }
+            &-content, &-tabpane {
+                height: 100%;
+            }
+       }
+    }
+    &-tab-pane {
+        padding: 10px 24px 10px 0;
     }
 }

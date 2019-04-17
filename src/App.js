@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { BackTop } from 'antd';
 import {
     BrowserRouter,
     Switch,
@@ -82,6 +83,7 @@ class App extends Component {
                     <Route path={CONFIGS.admin.path} component={Admin}/>
                     <Redirect from='*' to={CONFIGS.notFound.path} />
                 </Switch>
+                <BackTop /> 
             </BrowserRouter>
         </Provider>
     );

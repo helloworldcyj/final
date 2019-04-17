@@ -1,0 +1,29 @@
+.publish-article {
+    &-title {
+        font-weight: bold;
+    }
+
+    &-form-item {
+        margin-bottom: 0;
+    }
+
+    &-input {
+        &-title {
+            width: 60%;
+        }
+        &-content {
+            height: 360px !important;
+        }
+        &-tags {
+            width: 60% !important;
+        }
+    }
+    .operation-wrapper {
+        display: flex;
+        align-items: center;
+        margin-top: 16px;
+        > .publish-article-form-item, > button {
+            margin-right:16px;
+        }
+    }
+}
