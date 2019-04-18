@@ -77,9 +77,10 @@ const DEFAULT = {
 class ArticleViewer extends PureComponent {
 
     render() {
-        const { articleDetail: { title, content, meta } = DEFAULT } = this.props;
+        const { article: { title, content, meta } = DEFAULT } = this.props;
         const article = markdown.marked(content);
-        return (
+        
+        return article ? (
             <div className="article-viewer">
                 <div className="article-viewer-left">
                     <h1 className="article-viewer-title">{title}</h1>
@@ -100,7 +101,7 @@ class ArticleViewer extends PureComponent {
                     />
                 </div>
             </div>
-        );
+        ) : null;
     }
 }
 

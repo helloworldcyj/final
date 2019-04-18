@@ -1,10 +1,24 @@
 import React, { PureComponent } from 'react';
 import { Form, Select, Button, Input, Modal } from 'antd';
+import moment from 'moment';
+import update from 'immutability-helper';
+import ArticleViewer from '../ArticleViewer';
 import './index.scss';
 
 const FormItem = Form.Item;
 const TextArea = Input.TextArea;
-const TITLE_PREFIX = '#';
+const DEFAULT_PREVIEW_ARTICLE =  {
+    title: '',
+    content: '',
+    meta: {
+        publishTimestamp: moment().unix(),
+        wordCount: 0,
+        viewCount: 0,
+        commentCount: 0,
+        likeCount: 0,
+        tags: []
+    }
+};
 
 class PublichArticle extends PureComponent {
 
@@ -12,6 +26,7 @@ class PublichArticle extends PureComponent {
         super(props);
         this.state = {
             previewModalVisible: false,
+            previewArticle: DEFAULT_PREVIEW_ARTICLE
         }
     }
 
@@ -37,29 +52,31 @@ class PublichArticle extends PureComponent {
     closePreviewModal = () => 
         this.setState({
             previewModalVisible: false,
-            previewTitle: undefined,
-            previewDetail: undefined
-        })
-    
-    getArticle = () => {
-        const { getFieldsValue } = this.props.form;
-        const originData = getFieldsValue();
-        return {
-            ...originData,
-            articleTitle: originData.articleTitle ? `${TITLE_PREFIX}${originData.articleTitle}` : undefined
-        }
-    }
+            previewArticle: DEFAULT_PREVIEW_ARTICLE
+        });
 
-    handlePreview = () => {
-        // Todo: 预览
-        const { articleTitle, articleContent } = this.getArticle(); 
-        // const articleTitle = markdown.marked(detail);
-        console.log(this.getArticle()); 
-    }
+    handlePreview = () => 
+        this.props.form.validateFields((err, values) => {
+            if (!err) {
+                const { previewArticle } = this.state;
+                this.setState({
+                    previewModalVisible: true,
+                    previewArticle: {
+                        ...previewArticle,
+                        title: values.articleTitle,
+                        content: values.articleContent,
+                        meta: {
+                            ...previewArticle.meta,
+                            tags: values.articleTags
+                        }
+                    }
+                })
+            }
+        });
 
     render() {
         const { getFieldDecorator } = this.props.form;
-        const { previewModalVisible } = this.state;
+        const { previewModalVisible, previewArticle } = this.state;
         return (
             <div className="publish-article">
                 <Form className="publish-article-form" onSubmit={this.handleSubmit}>
@@ -111,10 +128,15 @@ class PublichArticle extends PureComponent {
                 </Form>
                 <Modal
                     visible={previewModalVisible}
-                    title={`预览`}
+                    title="预览"
                     onCancel={this.closePreviewModal}
+                    centered={true}
+                    footer={false}
+                    width="90%"
                 >
-                    div
+                    <ArticleViewer
+                        article={previewArticle}
+                    />
                 </Modal>
             </div>
         )

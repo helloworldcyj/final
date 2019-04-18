@@ -1,16 +1,27 @@
 import React, { PureComponent } from 'react';
 import classnames from 'classnames';
 import _ from 'lodash';
-import Avatar from '../../assets/avatar.jpg';
+import moment from 'moment';
 import './index.scss';
 import BeautyAvatar from '../BeatyAvatar';
+import { TIMESTAMP_FORMAT } from '../../configs';
 
 const CLASS_PREFIX = "article-header";
-const TEMP_TAGS = ['xxx', 'xxxx', 'xxxxx']
 
 class ArticleHeader extends PureComponent {
+
+    static defaultProps = {
+        meta: {
+            publishTimestamp: moment().unix(),
+            wordCount: 0,
+            viewCount: 0,
+            commentCount: 0,
+            likeCount: 0
+        }
+    }
+
     render() {
-        const { meta } = this.props;
+        const { meta: { publishTimestamp, wordCount, viewCount, commentCount, likeCount, tags } } = this.props;
         return (
             <div className={CLASS_PREFIX}>
                 <div className={`${CLASS_PREFIX}-left`}>
@@ -18,17 +29,17 @@ class ArticleHeader extends PureComponent {
                     <div className={`${CLASS_PREFIX}-meta-wrapper`}>
                         <div className={`${CLASS_PREFIX}-name`}>陈阳吉</div>
                         <div className={`${CLASS_PREFIX}-meta`}>
-                            <div className={`${CLASS_PREFIX}-time`}>2019-04-08 22:28:45</div>
-                            <div className={`${CLASS_PREFIX}-word-count`}>字数 3014</div>
-                            <div className={`${CLASS_PREFIX}-view-count`}>阅读 197</div>
-                            <div className={`${CLASS_PREFIX}-comment-count`}>评论 4</div>
-                            <div className={`${CLASS_PREFIX}-like-count`}>喜欢 0</div>
+                            <div className={`${CLASS_PREFIX}-time`}>{moment.unix(publishTimestamp).format(TIMESTAMP_FORMAT)}</div>
+                            <div className={`${CLASS_PREFIX}-word-count`}>字数 {wordCount}</div>
+                            <div className={`${CLASS_PREFIX}-view-count`}>阅读 {viewCount}</div>
+                            <div className={`${CLASS_PREFIX}-comment-count`}>评论 {commentCount}</div>
+                            <div className={`${CLASS_PREFIX}-like-count`}>喜欢 {likeCount}</div>
                         </div>
                     </div>
                 </div>
                 <div className={classnames(`${CLASS_PREFIX}-right`, `${CLASS_PREFIX}-tags`)}>
                     <i className="icon-tags" />
-                    {_.map(TEMP_TAGS, (tag, index) => (
+                    {_.map(tags, (tag, index) => (
                         <div className={`${CLASS_PREFIX}-tag`} key={index}>{tag}</div>
                     ))}
                 </div>

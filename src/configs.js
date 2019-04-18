@@ -35,3 +35,5 @@ export const CONFIGS  = {
 }
 
 export const TAG_NAME = 'tag_name';
+
+export const TIMESTAMP_FORMAT = 'YYYY-MM-DD HH:mm:ss';

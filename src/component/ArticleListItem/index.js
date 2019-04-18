@@ -1,8 +1,8 @@
 import React, { PureComponent } from 'react';
 import moment from 'moment';
 import './index.scss';
+import { TIMESTAMP_FORMAT } from '../../configs';
 
-const FORMAT = 'YYYY-MM-DD HH:mm:ss';
 
 class ArticleListItem extends PureComponent {
 
@@ -34,7 +34,7 @@ class ArticleListItem extends PureComponent {
                             {item.likeCount}
                         </div>
                         <div className="list-item-create list-item-data-item">
-                            {moment.unix(item.timestamp).format(FORMAT)}
+                            {moment.unix(item.timestamp).format(TIMESTAMP_FORMAT)}
                         </div>
                     </div>
                 </div>
