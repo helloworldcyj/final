@@ -1,0 +1,28 @@
+.article-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 60px;
+    &-left, &-right {
+        display: flex;
+        align-items: center;
+    }
+    &-meta-wrapper {
+        display: flex;
+        flex-direction: column;
+        padding-left: 8px;
+    }
+    &-meta {
+        display: flex;
+        > div {
+            margin-right: 8px;
+        }
+    }
+    &-tag {
+        padding:0 8px;
+        border-right: 2px solid #eee;
+        &:last-child {
+            border: none;
+        }
+    }
+}

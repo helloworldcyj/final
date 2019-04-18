@@ -1,0 +1,21 @@
+.article-viewer {
+  
+    &-left {
+        // flex: 0 0 70%;
+        float: left;
+        width: 70%;
+        padding: 24px;
+    }
+    &-right {
+        // flex: 1;
+        position: fixed;
+        left: 70%;
+        width: 30%;
+        margin-top: 130px;
+        border-left: 1px solid #eee;
+    }
+    &-title {
+        text-align: center;
+        font-size: 34px;
+    }
+}

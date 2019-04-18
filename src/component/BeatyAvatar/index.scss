@@ -1,4 +1,5 @@
-$size: 160px;
+$normalSize: 160px;
+$smallSize: 50px;
 
 @mixin cube($w) {
     content: '';
@@ -33,18 +34,33 @@ $size: 160px;
     }
 }
 
-@include keyframes(highlightKeyframes) {
+@include keyframes(normalHighlightKeyframes) {
     0%   { 
-        transform: translateX(-$size);
+        transform: translateX(-$normalSize);
     }
     27.27% {
-        transform: translateX(-$size);
+        transform: translateX(-$normalSize);
     }
     72.73% {
-        transform: translateX(2 * $size);
+        transform: translateX(2 * $normalSize);
     }
     100% { 
-        transform: translateX(2 * $size);
+        transform: translateX(2 * $normalSize);
+    }
+}
+
+@include keyframes(smallHighlightKeyframes) {
+    0%   { 
+        transform: translateX(-$smallSize);
+    }
+    27.27% {
+        transform: translateX(-$smallSize);
+    }
+    72.73% {
+        transform: translateX(2 * $smallSize);
+    }
+    100% { 
+        transform: translateX(2 * $smallSize);
     }
 }
 
@@ -67,8 +83,8 @@ $size: 160px;
 .user-headpic {
     position: relative;
     display: block;
-    width: $size;
-    height: $size;
+    width: $normalSize;
+    height: $normalSize;
     background: 
         url('../../assets/avatar.jpg')
         center/cover
@@ -77,13 +93,27 @@ $size: 160px;
     border: 2px solid silver;
     overflow: hidden;
     &:after {
-        @include cube($size);
-        @include highlight($size);
+        @include cube($normalSize);
+        @include highlight($normalSize);
     }
     &.starring {
         animation: heartbeat 4s linear infinite;
         &:after {
-            animation: highlightKeyframes 2s linear infinite;
+            animation: normalHighlightKeyframes 2s linear infinite;
+        }
+    }
+    &.avatar {
+        width: $smallSize;
+        height: $smallSize;
+        &:after {
+            @include cube($smallSize);
+            @include highlight($smallSize);
+        }
+        &.starring {
+            animation: heartbeat 4s linear infinite;
+            &:after {
+                animation: smallHighlightKeyframes 2s linear infinite;
+            }
         }
     }
 }
