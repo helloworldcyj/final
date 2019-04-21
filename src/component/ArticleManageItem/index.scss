@@ -11,6 +11,9 @@
     &-meta {
         display: flex;
         font-size: 12px;
+        > div {
+            margin-right: 8px;
+        }
     }
     &-button {
         margin-right: 8px;
