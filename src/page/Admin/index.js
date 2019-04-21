@@ -5,6 +5,7 @@ import { Tabs } from 'antd';
 import AdminLoginModal from '../../component/AdminLoginModal';
 import PublichArticle from '../../component/PublichArticle';
 import './index.scss';
+import ArticleManagement from '../ArticleManagement';
 
 const TabPane = Tabs.TabPane;
 
@@ -14,22 +15,23 @@ const TabPaneList = [
         component: <PublichArticle/>
     },
     {
-        tab: "文章管理"
+        tab: "文章管理",
+        component: <ArticleManagement />
     },
     {
-        tab: "历程管理"
+        tab: "历程管理",
     },
     {
-        tab: "查看留言"
+        tab: "查看留言",
     },
     {
-        tab: "关于"
+        tab: "关于",
     },
     {
-        tab: "用户管理"
+        tab: "用户管理",
     },
     {
-        tab: "评论管理"
+        tab: "评论管理",
     },
 ]
 
@@ -38,9 +40,11 @@ class Admin extends PureComponent {
     constructor(props) {
         super(props);
         this.state = {
-            loginModalVisible: true
+            loginModalVisible: true,
         }
     }
+
+    changeActiveKey = activeKey => this.setState({activeKey});
 
     render() {
         const { loginModalVisible } = this.state;

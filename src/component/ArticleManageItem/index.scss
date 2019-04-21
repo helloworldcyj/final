@@ -1,0 +1,43 @@
+.article-manage-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 0;
+    border-bottom: 1px solid #eee;
+    &-title {
+        font-size: 20px;
+        font-weight: bold;
+    }
+    &-meta {
+        display: flex;
+        font-size: 12px;
+    }
+    &-button {
+        margin-right: 8px;
+        &:last-child {
+            margin-right: 0;
+        }
+    }
+    &-edit-modal {
+        .ant-modal-body {
+            max-height: 500px;
+            overflow: auto;
+        }
+    }
+}
+
+::-webkit-scrollbar-track
+{
+	background-color: #F5F5F5;
+}
+
+::-webkit-scrollbar
+{
+	background-color: #F5F5F5;
+}
+
+::-webkit-scrollbar-thumb
+{
+	border-radius: 10px;
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+}
