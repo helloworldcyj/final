@@ -6,6 +6,7 @@ import AdminLoginModal from '../../component/AdminLoginModal';
 import PublichArticle from '../../component/PublichArticle';
 import './index.scss';
 import ArticleManagement from '../ArticleManagement';
+import CourseManagement from '../CourseManagement';
 
 const TabPane = Tabs.TabPane;
 
@@ -20,6 +21,7 @@ const TabPaneList = [
     },
     {
         tab: "历程管理",
+        component: <CourseManagement />
     },
     {
         tab: "查看留言",

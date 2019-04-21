@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
-import { BackTop } from 'antd';
+import { BackTop, LocaleProvider } from 'antd';
+import zhCN from 'antd/lib/locale-provider/zh_CN';
+import 'moment/locale/zh-cn';
+import moment from 'moment';
 import {
     BrowserRouter,
     Switch,
@@ -27,6 +30,7 @@ import 'highlight.js/styles/default.css';
 import ArticleDetail from './page/ArticleDetail';
 import Admin from './page/Admin';
 
+moment.locale('zh-cn');
 const sagaMiddleware = createSagaMiddleware();
 let storeEnhancers;
 if(process.env.NODE_ENV==='production'){
@@ -72,19 +76,21 @@ class App extends Component {
   render() {
     return (
         <Provider store={store}>
-            <BrowserRouter>
-                <Switch>
-                    <Route path={CONFIGS.home.path} component={Home} exact={true} />    
-                    <Route path={CONFIGS.notFound.path} component={NotFound} /> 
-                    <Route path={CONFIGS.articleDetail.path} component={ArticleDetail}/>
-                    {_.map(ROUTES, (item, index) => (
-                        <MainLayout key={index} path={item.path} component={item.component} />      
-                    ))}
-                    <Route path={CONFIGS.admin.path} component={Admin}/>
-                    <Redirect from='*' to={CONFIGS.notFound.path} />
-                </Switch>
-                <BackTop /> 
-            </BrowserRouter>
+            <LocaleProvider locale={zhCN}>
+                <BrowserRouter>
+                    <Switch>
+                        <Route path={CONFIGS.home.path} component={Home} exact={true} />    
+                        <Route path={CONFIGS.notFound.path} component={NotFound} /> 
+                        <Route path={CONFIGS.articleDetail.path} component={ArticleDetail}/>
+                        {_.map(ROUTES, (item, index) => (
+                            <MainLayout key={index} path={item.path} component={item.component} />      
+                        ))}
+                        <Route path={CONFIGS.admin.path} component={Admin}/>
+                        <Redirect from='*' to={CONFIGS.notFound.path} />
+                    </Switch>
+                    <BackTop /> 
+                </BrowserRouter>
+            </LocaleProvider>
         </Provider>
     );
   }

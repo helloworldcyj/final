@@ -108,6 +108,7 @@ class PublichArticle extends PureComponent {
                         <FormItem className="publish-article-form-item">
                             <Button
                                 type="primary"
+                                htmlType="submit"
                             >
                                 发布
                             </Button>
