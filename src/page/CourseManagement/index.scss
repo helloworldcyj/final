@@ -2,4 +2,22 @@
     &-form-submit-button {
         margin-right: 16px;
     }
+    &-operations {
+        display: flex;
+        > div {
+            margin-right: 8px;
+            color: #1890ff;
+            cursor: pointer;
+            &:last-child {
+                margin-right: 0;
+            }
+        }
+    }
+    &-add {
+        margin-bottom: 16px;
+    }
+    &-confirm {
+        float: right;
+        margin-top: 16px;
+    }
 }

@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react';
 import { Form, Select, Button, Input, Modal } from 'antd';
 import moment from 'moment';
-import update from 'immutability-helper';
 import ArticleViewer from '../ArticleViewer';
 import './index.scss';
 

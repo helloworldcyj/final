@@ -1,22 +1,49 @@
 import React, { PureComponent } from 'react';
-import { Button, Modal, Form, Table, Input, DatePicker  } from 'antd';
+import { Button, Table, Modal } from 'antd';
+import moment from 'moment';
+import _ from 'lodash';
 import { renderTimestamp } from '../../utils/utils';
+import CourseModal from './CourseModal';
 import './index.scss';
 
-const FormItem = Form.Item;
 const TableColumn = Table.Column;
-const TextArea = Input.TextArea;
+const MODAL_TITLE = {
+    add: "添加下一历程",
+    edit: "编辑历程"
+};
 
 class CourseManagement extends PureComponent {
 
     constructor(props) {
         super(props);
         this.state = {
-            modalVisible: false
+            modalVisible: false,
+            confirmModalVisible: false,
+            modalTitle: MODAL_TITLE.add,
+            modalSubmitFunc: _.noop,
+            course: []
         }
     }
 
-    showModal = () => this.setState({modalVisible: true});
+    componentDidMount() {
+        this.setState({
+            course: [{title: 'test', startTimestamp: 1555838588, endTimestamp: 1555838588, content: "测试的呀"}]
+        })
+    }
+
+    handleAddNextCourse = (formValue) => {
+        this.setState({
+            course: [...this.state.course, formValue]
+        });
+        this.closeModal();
+    }
+
+    triggerNextModalShow = () => this.setState({
+        modalVisible: true,
+        modalTitle: MODAL_TITLE.add,
+        modalSubmitFunc: this.handleAddNextCourse,
+        formValue: {}
+    });
 
     closeModal = () => this.setState({modalVisible: false})
 
@@ -26,26 +53,71 @@ class CourseManagement extends PureComponent {
 
     renderEndTime = value => value ? renderTimestamp(value) : "至今";
 
-    handleSubmit = (e) => {
-        // Todo: 发文
-        e.preventDefault();
-        this.props.form.validateFields((err, values) => {
-            if (!err) {
-                console.log('Received values of form: ', values);
-            }
-        });
+    handleSubmit = (formValue) => {
+        console.log(formValue)
     }
 
+    handleEditModalSubmit = (index, formValue) => {
+        const course = [...this.state.course];
+        course[index] = formValue;
+        this.setState({course});
+        this.closeModal();
+    }
+
+    mapCourseToState = (course) => {
+        const result = {
+            title: course.title,
+            content: course.content
+        }
+        result.startTimestamp = moment.unix(course.startTimestamp);
+        if(course.endTimestamp) {
+            result.endTimestamp = moment.unix(course.endTimestamp);
+        }
+        return result;
+    }
+
+    triggerEditModalShow = (data, index) => {
+        this.setState({
+            formValue: this.mapCourseToState(data),
+            modalVisible: true,
+            modalTitle: MODAL_TITLE.edit,
+            modalSubmitFunc: this.handleEditModalSubmit.bind(this, index)
+        })
+    }
+
+    handleDeleteCourse = (numberIndex) => {
+        const course = [...this.state.course];
+        _.remove(course, (item, index) => index === numberIndex);
+        this.setState({course});
+    }
+
+    renderOperations = (dataIndexData, allData, numberIndex) => {
+        return (
+            <div className="course-management-operations">
+                <div className="course-management-operations-edit" onClick={this.triggerEditModalShow.bind(this, allData, numberIndex)}>编辑</div>
+                <div className="course-management-operations-delete" onClick={this.handleDeleteCourse.bind(this, numberIndex)}>删除</div>
+            </div>
+        )
+    }
+
+    closeConfirmModal = () => this.setState({confirmModalVisible: false});
+
+    confirmCourseChange = () => {
+        // Todo: 等待接口
+        this.closeConfirmModal();
+    }
+
+    showConfirmModal = () => this.setState({confirmModalVisible: true});
+    
     render() {
-        const { modalVisible } = this.state;
-        const { form, dataSource=[{title: 'test', startTimestamp: 1555838588, content: "测试的呀"}] } = this.props;
-        const { getFieldDecorator } = form;
+        const { modalVisible, confirmModalVisible, course, modalSubmitFunc, modalTitle, formValue } = this.state;
+
         return (
             <div className="course-management">
-                <Button type="primary" className="course-management-add" onClick={this.showModal}>添加下一历程</Button>
+                <Button type="primary" className="course-management-add" onClick={this.triggerNextModalShow}>添加下一历程</Button>
 
                 <Table 
-                    dataSource={dataSource}
+                    dataSource={course}
                     pagination={false}
                 >
                     <TableColumn
@@ -56,7 +128,7 @@ class CourseManagement extends PureComponent {
                     <TableColumn
                         title="历程内容"
                         dataIndex="content"
-                        width="60%"
+                        width="45%"
                     />
                     <TableColumn
                         title="开始时间"
@@ -70,56 +142,31 @@ class CourseManagement extends PureComponent {
                         render={this.renderEndTime}
                         width="15%"
                     />
+                    <TableColumn
+                        title="操作"
+                        render={this.renderOperations}
+                        width="15%"
+                    />
                 </Table>
-                <Modal
+                <Button type="primary" className="course-management-confirm" onClick={this.showConfirmModal}>确认修改</Button>
+                <CourseModal
                     visible={modalVisible}
-                    onCancel={this.closeModal}
-                    footer={false}
-                    centered={true}
-                    className="course-management-modal"
-                    title="添加下一历程"
-                    okText="确认"
-                    cancelText="取消"
+                    title={modalTitle}
+                    formValue={formValue}
+                    closeModal={this.closeModal}
+                    handleSubmit={modalSubmitFunc}
+                />
+                <Modal
+                    visible={confirmModalVisible}
+                    onCancel={this.closeConfirmModal}
+                    onOk={this.confirmCourseChange}
+                    title="修改确认"
                 >
-                    <Form
-                        className="course-management-from"
-                        onSubmit={this.handleSubmit}
-                    >
-                        <FormItem className="course-management-form-item">
-                            {getFieldDecorator("title", {
-                                rules: [{ required: true, message: '历程标题不可以为空' }],
-                            })(
-                                <Input placeholder="请输入历程标题" className="course-management-input-title"/>
-                            )}                         
-                        </FormItem>
-                        <FormItem className="course-management-form-item">
-                            {getFieldDecorator("content", {
-                                rules: [{ required: true, message: '历程内容不可为空' }],
-                            })(
-                                <TextArea placeholder="请输入历程内容" className="course-management-input-content"/>
-                            )}
-                        </FormItem>
-                        <FormItem className="course-management-form-item">
-                            {getFieldDecorator("startTimestamp", {
-                                rules: [{ required: true, message: '历程开始时间不可为空' }],
-                            })(
-                                <DatePicker showTime={true} placeholder="请选择历程开始时间" className="course-management-input-start"/>
-                            )}
-                        </FormItem>
-                        <FormItem className="course-management-form-item">
-                            {getFieldDecorator("endTimestamp")(
-                                <DatePicker showTime={true} placeholder="请选择历程结束时间" className="course-management-input-end"/>
-                            )}
-                        </FormItem>
-                        <div className="course-management-form-operations">
-                            <Button type="primary"  htmlType="submit" className="course-management-form-submit-button">确认</Button>
-                            <Button type="primary" onClick={this.closeModal}>取消</Button>
-                        </div>
-                    </Form>
+                    确认修改？
                 </Modal>
             </div>
         )
     }
 }
 
-export default Form.create()(CourseManagement);
+export default CourseManagement;
