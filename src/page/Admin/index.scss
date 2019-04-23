@@ -11,6 +11,10 @@
             &-tab {
                 text-align: center;
             }
+            &-left-content{
+                height: 100%;
+                overflow: auto;
+            }
        }
     }
     &-tab-pane {

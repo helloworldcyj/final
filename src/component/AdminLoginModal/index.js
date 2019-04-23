@@ -44,13 +44,13 @@ class AdminLoginModal extends PureComponent {
                         )}
                     </Form.Item>
                     <Form.Item>
-                    <Button
-                        type="primary"
-                        htmlType="submit"
-                        className="login-form-submit"
-                    >
-                        登录
-                    </Button>
+                        <Button
+                            type="primary"
+                            htmlType="submit"
+                            className="login-form-submit"
+                        >
+                            登录
+                        </Button>
                     </Form.Item>
                 </Form>
             </Modal>

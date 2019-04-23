@@ -7,6 +7,9 @@ import PublichArticle from '../../component/PublichArticle';
 import './index.scss';
 import ArticleManagement from '../ArticleManagement';
 import CourseManagement from '../CourseManagement';
+import ViewMessage from '../../component/ViewMessage';
+import UserManagement from '../../component/UserManagement';
+import CommentManagement from '../../component/CommentManagement';
 
 const TabPane = Tabs.TabPane;
 
@@ -25,15 +28,15 @@ const TabPaneList = [
     },
     {
         tab: "查看留言",
-    },
-    {
-        tab: "关于",
+        component: <ViewMessage />
     },
     {
         tab: "用户管理",
+        component: <UserManagement />
     },
     {
         tab: "评论管理",
+        component: <CommentManagement />
     },
 ]
 
