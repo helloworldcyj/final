@@ -1,6 +1,6 @@
 import { fork } from 'redux-saga/effects';
-import testFlow from './test';
+import userSaga from './user';
 
 export default function* rootSaga() {
-    yield fork(testFlow);
+    yield fork(userSaga);
 }

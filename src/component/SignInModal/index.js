@@ -1,32 +1,41 @@
 import React, { PureComponent } from 'react';
 import { Modal, Form, Icon, Input, Button } from 'antd';
+import { connect } from 'react-redux';
+import _ from 'lodash';
+import { signInActionCreator } from '../../actions/user';
 import './index.scss';
 
-class AdminLoginModal extends PureComponent {
+class SignInModal extends PureComponent {
+
+    static defaultProps = {
+        closable: false,
+        onCancel: _.noop
+    }
 
     handleSubmit = (e) => {
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
             if (!err) {
-                // Todo:
-                console.log('Received values of form: ', values);
-                // this.setState({
-
-                // });
+                this.props.signInAction({
+                    ...values
+                });
             }
         });
     }
 
     render() {
-        const { loginModalVisible, form } = this.props;
+        const { visible, form, closable, onCancel } = this.props;
         const { getFieldDecorator } = form;
         return (
             <Modal
-                visible={loginModalVisible}
+                visible={visible}
+                closable={closable}
+                onCancel={onCancel}
+                title="登录"
                 centered={true}
-                closable={false}
                 footer={false}
-                width={320}
+                width={320} 
+                className="sign-in-modal"
             >
                 <Form className="login-form" onSubmit={this.handleSubmit}>
                     <Form.Item>
@@ -58,4 +67,12 @@ class AdminLoginModal extends PureComponent {
     }
 }
 
-export default Form.create()(AdminLoginModal);
+const mapStateToProps = (state) => {
+    return {}
+}
+
+const mapDispatchToProps = {
+    signInAction: signInActionCreator
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Form.create()(SignInModal));

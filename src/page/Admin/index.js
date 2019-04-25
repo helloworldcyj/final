@@ -1,15 +1,18 @@
 import React, { PureComponent } from 'react';
 import _ from 'lodash';
-import Sakura from '../../component/Sakura';
 import { Tabs } from 'antd';
-import AdminLoginModal from '../../component/AdminLoginModal';
+import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import Sakura from '../../component/Sakura';
+import SignInModal from '../../component/SignInModal';
 import PublichArticle from '../../component/PublichArticle';
-import './index.scss';
 import ArticleManagement from '../ArticleManagement';
 import CourseManagement from '../CourseManagement';
 import ViewMessage from '../../component/ViewMessage';
 import UserManagement from '../../component/UserManagement';
 import CommentManagement from '../../component/CommentManagement';
+import './index.scss';
+import { signInUserSelector } from '../../selector/user';
 
 const TabPane = Tabs.TabPane;
 
@@ -38,6 +41,10 @@ const TabPaneList = [
         tab: "评论管理",
         component: <CommentManagement />
     },
+    {
+        tab: "其他",
+        component: <Link to="/">回到首页</Link>
+    }
 ]
 
 class Admin extends PureComponent {
@@ -51,29 +58,51 @@ class Admin extends PureComponent {
 
     changeActiveKey = activeKey => this.setState({activeKey});
 
+    renderUnLoginContent = () => {
+        const { user } = this.props;
+        return (
+            <>
+                <Sakura/>
+                <SignInModal
+                    visible={!!!user}
+                />
+            </>
+        )
+    }
+
+    renderLoginContent = () => {
+        return (
+            <div className="content">
+                <Tabs
+                    tabPosition={"left"}
+                >
+                    {_.map(TabPaneList, (tabPaneItem, index) => 
+                        <TabPane key={index} tab={tabPaneItem.tab} className="admin-tab-pane">
+                            {tabPaneItem.component}
+                        </TabPane> 
+                    )}
+                </Tabs> 
+            </div>
+        );
+    }
+
     render() {
-        const { loginModalVisible } = this.state;
-        
+       
         return (
             <div className="admin">
-                {/* <Sakura/>
-                <AdminLoginModal
-                    loginModalVisible={loginModalVisible}
-                /> */}
-                <div className="content">
-                    <Tabs
-                        tabPosition={"left"}
-                    >
-                        {_.map(TabPaneList, (tabPaneItem, index) => 
-                            <TabPane key={index} tab={tabPaneItem.tab} className="admin-tab-pane">
-                                {tabPaneItem.component}
-                            </TabPane> 
-                        )}
-                    </Tabs> 
-                </div>
+                {   this.props.user 
+                        ? this.renderLoginContent()
+                        : this.renderUnLoginContent()
+                }
             </div>
         );
     }
 }
 
-export default Admin;
+const mapStateToProps = state => {
+    return {
+        user: signInUserSelector(state)
+    }
+}
+
+export default connect(mapStateToProps)(Admin);

@@ -2,10 +2,10 @@ $bule: #1890ff;
 
 .main-layout {
     height: 100%;
-    overflow: auto;
+    overflow: hidden;
     &-body {
         height: calc(100% - 62px);
-        overflow: hidden;
+        overflow: auto;
         padding: 16px 24px;
         background-color: rgba(221, 221, 221, 0.5);
         &.sticky-wrapper {
@@ -19,6 +19,8 @@ $bule: #1890ff;
                 width: 70%;
             }
             .body-right{
+                position: absolute;
+                right: 24px;
                 width: 30%;
                 .name-avatar {
                     padding-bottom: 10px;
