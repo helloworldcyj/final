@@ -1,0 +1,21 @@
+.custom-timeline{
+    .ant-timeline-item-head-red {
+        background-color: rgba(221, 221, 221, 0);
+    }   
+}
+.custom-timeline-wrapper {
+    .ant-timeline {
+        padding-top: 20px;
+        .ant-timeline-item-content{
+            cursor: pointer;
+            display: inline-block;
+            min-height: 0;
+        }
+    }
+    > .custom-timeline {
+        padding-bottom: 0;
+        &:first-child {
+            padding-bottom: 20px;
+        }
+    }
+}

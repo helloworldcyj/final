@@ -29,6 +29,7 @@ import 'antd/dist/antd.css';
 import 'highlight.js/styles/default.css';
 import ArticleDetail from './page/ArticleDetail';
 import Admin from './page/Admin';
+import GlobalResource from './globalResource';
 
 moment.locale('zh-cn');
 const sagaMiddleware = createSagaMiddleware();
@@ -77,19 +78,21 @@ class App extends Component {
     return (
         <Provider store={store}>
             <LocaleProvider locale={zhCN}>
-                <BrowserRouter>
-                    <Switch>
-                        <Route path={CONFIGS.home.path} component={Home} exact={true} />    
-                        <Route path={CONFIGS.notFound.path} component={NotFound} /> 
-                        <Route path={CONFIGS.articleDetail.path} component={ArticleDetail}/>
-                        {_.map(ROUTES, (item, index) => (
-                            <MainLayout key={index} path={item.path} component={item.component} />      
-                        ))}
-                        <Route path={CONFIGS.admin.path} component={Admin}/>
-                        <Redirect from='*' to={CONFIGS.notFound.path} />
-                    </Switch>
-                    <BackTop /> 
-                </BrowserRouter>
+                <GlobalResource>
+                    <BrowserRouter>
+                        <Switch>
+                            <Route path={CONFIGS.home.path} component={Home} exact={true} />    
+                            <Route path={CONFIGS.notFound.path} component={NotFound} /> 
+                            <Route path={CONFIGS.articleDetail.path} component={ArticleDetail}/>
+                            {_.map(ROUTES, (item, index) => (
+                                <MainLayout key={index} path={item.path} component={item.component} />      
+                            ))}
+                            <Route path={CONFIGS.admin.path} component={Admin}/>
+                            <Redirect from='*' to={CONFIGS.notFound.path} />
+                        </Switch>
+                        <BackTop /> 
+                    </BrowserRouter>
+                </GlobalResource>
             </LocaleProvider>
         </Provider>
     );

@@ -2,8 +2,7 @@ import React, { PureComponent } from 'react';
 import _ from 'lodash';
 import { Modal } from 'antd';
 import CommentListItem from './CommentListItem';
-import markdown from '../../utils/markdown';
-import { renderTimestamp } from '../../utils/utils';
+import CommentItem from '../CommentItem';
 import './index.scss';
 
 class CommentManagement extends PureComponent {
@@ -14,56 +13,42 @@ class CommentManagement extends PureComponent {
             title: '文章标题',
             comments: [
                 {
+                    id: 0,
                     userName: "用户一",
                     content: `<blockquote><pre>引用mf1389004071的发言:</pre>这个评论效果确实好很多, 赞</blockquote>`,
                     timestamp: 1555319157,
                 },
                 {
+                    id: 1,
                     content: `<blockquote><pre>引用但丁的发言:</pre><blockquote><pre>引用mf1389004071的发言:</pre>这个评论效果确实好很多, 赞</blockquote>
                     再也不用纠结使用外部评论系统带来的各种体验不佳的问题了</blockquote>`,
                     userName: "用户三",
                     timestamp: 1555419157
                 },
                 {
+                    id: 2,
                     userName: "用户一",
                     content: "这是一条评论",
                     timestamp: 1555319157,
                 },
                 {
+                    id: 3,
                     content: "这又是一条评论",
                     userName: "用户三",
                     timestamp: 1555419157
                 },
                 {
+                    id: 4,
                     userName: "用户一",
                     content: "这是一条评论",
                     timestamp: 1555319157,
                 },
                 {
+                    id: 5,
                     content: "这又是一条评论",
                     userName: "用户三",
                     timestamp: 1555419157
-                },
-                {
-                    userName: "用户一",
-                    content: "这是一条评论",
-                    timestamp: 1555319157,
-                },
-                {
-                    content: "这又是一条评论",
-                    userName: "用户三",
-                    timestamp: 1555419157
-                },
-                {
-                    userName: "用户一",
-                    content: "这是一条评论",
-                    timestamp: 1555319157,
-                },
-                {
-                    content: "这又是一条评论",
-                    userName: "用户三",
-                    timestamp: 1555419157
-                },
+                }
             ]
         }]
     }
@@ -92,40 +77,15 @@ class CommentManagement extends PureComponent {
         edit: false
     })
 
-    handleDelte = (deleteIndex) => {
+    handleDelte = (comment) => {
         this.setState({
             edit: true,
             editItem: {
                 ...this.state.editItem,
-                comments: _.filter(this.state.editItem.comments, (item, index) => index !== deleteIndex)
+                comments: _.filter(this.state.editItem.comments, item => item.id !== comment.id)
             } 
             
         })
-    }
-
-    renderComment = ({userName, timestamp, content}, numberIndex) => {
-        const comment = markdown.marked(content);
-        return (
-            <div className="comment-management-comment-item" key={numberIndex}>
-                <div className="comment-management-comment">
-                    <div className="comment-management-comment-meta">
-                        <div className="comment-management-comment-user">{userName}</div>
-                        <div className="comment-management-comment-time">
-                            {renderTimestamp(timestamp)}
-                        </div>
-                    </div>
-                    <div 
-                        className="comment-management-comment-content"
-                        dangerouslySetInnerHTML={{
-                            __html: comment.content
-                        }}
-                    />
-                </div>
-                <div className="comment-management-delete" onClick={this.handleDelte.bind(this, numberIndex)}>
-                    删除
-                </div>
-            </div>
-        );
     }
 
     confirmEdit = () => {
@@ -159,7 +119,7 @@ class CommentManagement extends PureComponent {
                     title="管理评论"
                     width="80%"
                 >
-                    {_.map(comments, (comment, index) => this.renderComment(comment, index))}
+                    {_.map(comments, (comment, index) => <CommentItem key={index} operation={this.handleDelte} operationText="删除" comment={comment}/>)}
                 </Modal>
             </div>
         );

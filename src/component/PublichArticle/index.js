@@ -1,8 +1,10 @@
 import React, { PureComponent } from 'react';
+import { connect } from 'react-redux';
 import { Form, Select, Button, Input, Modal } from 'antd';
 import moment from 'moment';
 import ArticleViewer from '../ArticleViewer';
 import './index.scss';
+import { publishArticleActionCreator, updateArticleActionCreator } from '../../actions/article';
 
 const FormItem = Form.Item;
 const TextArea = Input.TextArea;
@@ -30,20 +32,23 @@ class PublichArticle extends PureComponent {
     }
 
     handleSubmit = (e) => {
-        // Todo: 发文
+        const { publishArticle, form } = this.props;
         e.preventDefault();
-        this.props.form.validateFields((err, values) => {
+        form.validateFields((err, values) => {
             if (!err) {
-                console.log('Received values of form: ', values);
+                publishArticle(values);
             }
         });
     }
 
     handleSave = () => {
-        // Todo: 保存
-        this.props.form.validateFields((err, values) => {
+        const { publishArticle, form } = this.props;
+        form.validateFields((err, values) => {
             if (!err) {
-                console.log('保存 Received values of form: ', values);
+                publishArticle({
+                    ...values,
+                    status: 0
+                });
             }
         });
     }
@@ -62,34 +67,55 @@ class PublichArticle extends PureComponent {
                     previewModalVisible: true,
                     previewArticle: {
                         ...previewArticle,
-                        title: values.articleTitle,
-                        content: values.articleContent,
+                        title: values.title,
+                        content: values.content,
                         meta: {
                             ...previewArticle.meta,
-                            tags: values.articleTags
-                        }
+                            wordCount: values.content.length,
+                        },
+                        tags: values.tags
                     }
                 })
             }
         });
 
     render() {
-        const { getFieldDecorator } = this.props.form;
+        const { article = {}, form } = this.props;
+        const { getFieldDecorator } = form;
         const { previewModalVisible, previewArticle } = this.state;
         return (
             <div className="publish-article">
                 <Form className="publish-article-form" onSubmit={this.handleSubmit}>
                     <div className="publish-article-title">标题</div>
                     <FormItem className="publish-article-form-item">
-                        {getFieldDecorator("articleTitle", {
+                        {getFieldDecorator("title", {
+                            initialValue: article.title,
                             rules: [{ required: true, message: '文章标题不可为空' }],
                         })(
                             <Input placeholder="请输入文章标题" className="publish-article-input-title"/>
                         )}
                     </FormItem>
+                    <div className="publish-article-title">简介</div>
+                    <FormItem className="publish-article-form-item">
+                        {getFieldDecorator("summary", {
+                            initialValue: article.summary,
+                            rules: [{ required: true, message: '文章简介不可为空' }],
+                        })(
+                            <Input placeholder="请输入文章简介" className="publish-article-input-title"/>
+                        )}
+                    </FormItem>
+                    <div className="publish-article-title">封面照</div>
+                    <FormItem className="publish-article-form-item">
+                        {getFieldDecorator("coverPhotoUrl", {
+                            initialValue: article.coverPhotoUrl
+                        })(
+                            <Input placeholder="请输入文章封面照地址" className="publish-article-input-title"/>
+                        )}
+                    </FormItem>
                     <div className="publish-article-title">正文</div>
                     <FormItem className="publish-article-form-item">
-                        {getFieldDecorator("articleContent", {
+                        {getFieldDecorator("content", {
+                            initialValue: article.content,
                             rules: [{ required: true, message: '正文内容不可为空' }],
                         })(
                             <TextArea placeholder="请输入正文内容" className="publish-article-input-content"/>
@@ -97,7 +123,8 @@ class PublichArticle extends PureComponent {
                     </FormItem>
                     <div className="publish-article-title">分类</div>
                     <FormItem className="publish-article-form-item">
-                        {getFieldDecorator("articleTags", {
+                        {getFieldDecorator("tags", {
+                            initialValue: article.tags,
                             rules: [{ required: true, message: '请添加分类' }],
                         })(
                             <Select  mode="tags" placeholder="标签分类" className="publish-article-input-tags"/>
@@ -143,5 +170,14 @@ class PublichArticle extends PureComponent {
     }
 }
 
-export default Form.create()(PublichArticle);
+const mapStateToProps = state => {
+    return {}
+}
+
+const mapDispatchToProps = {
+    publishArticle: publishArticleActionCreator,
+    saveArticle: updateArticleActionCreator
+}
+
+export default Form.create()(connect(mapStateToProps, mapDispatchToProps)(PublichArticle));
  

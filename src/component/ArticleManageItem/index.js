@@ -1,9 +1,9 @@
 import React, { PureComponent } from 'react';
 import { withRouter } from 'react-router-dom';
 import { Button, Modal } from 'antd';
-import { CONFIGS } from '../../configs';
 import './index.scss';
 import PublichArticle from '../PublichArticle';
+import { renderTimestamp } from '../../utils/utils';
 
 
 // 依靠article_id做查看时的跳转
@@ -40,26 +40,26 @@ class ArticleManageItem extends PureComponent {
     render() {
 
         const { editModalVisible, deleteModalVisible } = this.state;
-
+        const { article, article: {title, status, meta: { viewCount, likeCount, commentCount, publishTimestamp }} } = this.props;
         return (
             <div className="article-manage-item">
                 <div className="article-manage-item-summary">
-                    <div className="article-manage-item-title">标题</div>
+                    <div className="article-manage-item-title">{title}</div>
                     <div className="article-manage-item-meta">
-                        <div className="article-manage-item-view-count">阅读数：0</div>
-                        <div className="article-manage-item-comment-count">评论数：0</div>
-                        <div className="article-manage-item-like-count">点赞数: 0</div>
-                        <div className="article-manage-item-publish-time">发布时间：2019-04-15 17:05:57</div>
+                        <div className="article-manage-item-view-count">阅读数：{viewCount}</div>
+                        <div className="article-manage-item-comment-count">评论数：{commentCount}</div>
+                        <div className="article-manage-item-like-count">点赞数: {likeCount}</div>
+                        <div className="article-manage-item-publish-time">发布时间：{renderTimestamp(publishTimestamp)}</div>
                     </div>
                 </div>
-                <div className="article-manage-item-status">以发布</div>
+                <div className="article-manage-item-status">{status ? '已发布' : '未发布'}</div>
                 <div className="article-manage-item-operations">
                     <Button type="primary" className="article-manage-item-button" onClick={this.showEditModal}>编辑</Button>
                     <Button type="primary" className="article-manage-item-button" onClick={this.showDeleteModal}>删除</Button>
                     <Button type="primary" className="article-manage-item-button" onClick={this.handleView}>查看</Button>
                 </div>
 
-                <Modal
+                {editModalVisible && <Modal
                     visible={editModalVisible}
                     onCancel={this.closeEditModal}
                     footer={false}
@@ -68,8 +68,8 @@ class ArticleManageItem extends PureComponent {
                     title="编辑"
                     className="article-manage-item-edit-modal"
                 >
-                    <PublichArticle />
-                </Modal>
+                    <PublichArticle article={article}/>
+                </Modal>}
 
                 <Modal
                     visible={deleteModalVisible}

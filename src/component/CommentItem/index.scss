@@ -1,0 +1,31 @@
+.comment-item {
+    position: relative;
+    padding: 16px 0 32px;
+    border-bottom: 1px solid #eee;
+    &:last-child {
+        border-bottom: none;
+    }
+    &-meta {
+        display: flex;
+        justify-content: space-between;
+    }
+    &-content {
+        margin-top: 8px;
+        blockquote {
+            margin: 0em;
+            padding-left: 1em;
+            border-left: 2px solid #ccc;
+            pre {
+                background-color: #eaeaea;
+                color: #000;
+            }
+        }
+    }
+    &-operation {
+        position: absolute;
+        right: 0;
+        display: inline-block;
+        cursor: pointer;
+        color: #1890ff;
+    }
+}

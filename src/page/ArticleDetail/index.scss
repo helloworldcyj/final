@@ -7,9 +7,19 @@
             flex: 1;
         }
     } 
+    &-comments {
+        width: 70%;
+        padding: 24px;
+        &-summary {
+            font-size: 24px;
+            font-weight: bold;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #ccc;
+        }
+    }
 }
 
-/* marrdown css*/
+/* markdown css*/
 
 img {
     width: 100%;

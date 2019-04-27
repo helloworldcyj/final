@@ -1,0 +1,13 @@
+.article-comment {
+    padding: 24px;
+    width: 70%;
+    &-input {
+        &-content {
+            height: 100px !important;
+        }
+        &-submit {
+            float: right;
+        }
+    }
+   
+}

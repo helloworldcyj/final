@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react';
 import { Modal, Form, Icon, Input, Button } from 'antd';
 import { connect } from 'react-redux';
-import _ from 'lodash';
 import { signUpActionCreator } from '../../actions/user';
 import './index.scss';
 

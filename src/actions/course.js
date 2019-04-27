@@ -1,0 +1,11 @@
+const NAME_SPACE = 'COURSE';
+
+export const COURSE_ACTION = {
+    GET_COURSE_START: `${NAME_SPACE}/GET_COURSE_START`,
+    GET_COURSE_SUCCESS: `${NAME_SPACE}/GET_COURSE_SUCCESS`, 
+    GET_COURSE_FAILURE: `${NAME_SPACE}/GET_COURSE_FAILURE`,
+}
+
+export const getCourseActionCreator = () => ({
+    type: COURSE_ACTION.GET_COURSE_START
+})

@@ -1,18 +1,13 @@
 import React, { PureComponent } from 'react';
+import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import _ from 'lodash';
 import { Tag } from 'antd';
 import { CONFIGS, TAG_NAME } from '../../configs';
 import './index.scss';
 import { getQueryStringByName } from '../../utils/utils';
+import { articleTagsSelector } from '../../selector/article';
 
-const TEMP = [
-    '测试用1',
-    "测试用2",
-    "测试用3",
-    "测试用4",
-    "测试用5"
-];
 const COLORS = [
     'magenta',
     'red',
@@ -29,6 +24,7 @@ const COLORS = [
 
 class ArticleTags extends PureComponent {
 
+
     onClick = (tag) => {
         const { history } = this.props;
         const currenTQueryString = decodeURI(getQueryStringByName(TAG_NAME));
@@ -37,7 +33,7 @@ class ArticleTags extends PureComponent {
     }
 
     render() {
-        const { tags = TEMP } = this.props;
+        const { tags } = this.props;
         return (
             <div className="article-tags">
                 <div className="summary">标签云</div>
@@ -50,5 +46,11 @@ class ArticleTags extends PureComponent {
     }
 }
 
+const mapStateToProps = state => {
+    return {
+        tags: articleTagsSelector(state)
+    }
+}
 
-export default withRouter(ArticleTags);
+
+export default withRouter(connect(mapStateToProps)(ArticleTags));

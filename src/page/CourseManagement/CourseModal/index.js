@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react';
 import { Modal, Form, Input, Button, DatePicker } from 'antd';
-import _ from 'lodash';
 
 const FormItem = Form.Item;
 const TextArea = Input.TextArea;

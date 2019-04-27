@@ -1,8 +1,6 @@
 import React, { PureComponent } from 'react';
-import moment from 'moment';
-import './index.scss';
-import { TIMESTAMP_FORMAT } from '../../configs';
 import { renderTimestamp } from '../../utils/utils';
+import './index.scss';
 
 
 class ArticleListItem extends PureComponent {
@@ -13,7 +11,7 @@ class ArticleListItem extends PureComponent {
     }
 
     render() {
-        const { item } = this.props;
+        const { item, item: {meta} } = this.props;
         return (
             <div className="list-item" onClick={this.handleClick}>
                 <div className="list-item-left sticky-wrapper">
@@ -24,19 +22,18 @@ class ArticleListItem extends PureComponent {
                     <div className="list-item-data">
                         <div className="list-item-view list-item-data-item">
                             <i className="icon-eye"/>
-                            {item.viewCount}
+                            {meta.viewCount}
                         </div>
                         <div className="list-item-comment list-item-data-item">
                             <i className="icon-message"/>
-                            {item.commentCount}
+                            {meta.commentCount}
                         </div>
                         <div className="list-item-like list-item-data-item">
                             <i className="icon-like"/>
-                            {item.likeCount}
+                            {meta.likeCount}
                         </div>
                         <div className="list-item-create list-item-data-item">
-                            {renderTimestamp(item.timestamp)}
-                            {/* {moment.unix(item.timestamp).format(TIMESTAMP_FORMAT)} */}
+                            {renderTimestamp(meta.publishTimestamp)}
                         </div>
                     </div>
                 </div>
