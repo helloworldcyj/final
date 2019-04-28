@@ -1,5 +1,6 @@
 import { USER_ACTION } from "../actions/user";
 import update from 'immutability-helper'
+import _ from 'lodash';
 // type 0为管理员 1为普通用户
 const DEFAULT_STATE = {
     userList: [
@@ -73,6 +74,11 @@ export default function reducer(state = DEFAULT_STATE, action) {
             return {
                 ...state,
                 signInUser: undefined
+            }
+        case USER_ACTION.DELETE_USER_SUCCESS:
+            return {
+                ...state,
+                userList: _.filter(state.userList, user => user.email !== action.payload.email)
             }
         default:
             return state;

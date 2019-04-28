@@ -1,10 +1,13 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import { Button, Table, Modal } from 'antd';
+import { connect } from 'react-redux';
 import moment from 'moment';
 import _ from 'lodash';
 import { renderTimestamp } from '../../utils/utils';
 import CourseModal from './CourseModal';
+import { getCourseActionCreator, updateCourseActionCreator } from '../../actions/course';
 import './index.scss';
+import { courseSelector } from '../../selector/course';
 
 const TableColumn = Table.Column;
 const MODAL_TITLE = {
@@ -12,11 +15,22 @@ const MODAL_TITLE = {
     edit: "编辑历程"
 };
 
-class CourseManagement extends PureComponent {
+class CourseManagement extends Component {
+
+    static getDerivedStateFromProps(nextProps, prevState) {
+        if(prevState.first  && nextProps.course.length !== 0) {
+            return {
+                first: false,
+                course: nextProps.course
+            }
+        }
+        return null;
+    }
 
     constructor(props) {
         super(props);
         this.state = {
+            first: true, // bad code
             modalVisible: false,
             confirmModalVisible: false,
             modalTitle: MODAL_TITLE.add,
@@ -26,9 +40,15 @@ class CourseManagement extends PureComponent {
     }
 
     componentDidMount() {
-        this.setState({
-            course: [{title: 'test', startTimestamp: 1555838588, endTimestamp: 1555838588, content: "测试的呀"}]
-        })
+        this.props.getCourse();
+    }
+
+    componentDidUpdate(prevProps) {
+        if(this.props.course !== prevProps.course) {
+            this.setState({
+                course: this.props.course
+            })
+        }
     }
 
     handleAddNextCourse = (formValue) => {
@@ -103,7 +123,8 @@ class CourseManagement extends PureComponent {
     closeConfirmModal = () => this.setState({confirmModalVisible: false});
 
     confirmCourseChange = () => {
-        // Todo: 等待接口
+        const { updateCourse } = this.props;
+        updateCourse(this.state.course);
         this.closeConfirmModal();
     }
 
@@ -169,4 +190,15 @@ class CourseManagement extends PureComponent {
     }
 }
 
-export default CourseManagement;
+const mapStateToProps = state => {
+    return {
+        course: courseSelector(state)
+    }
+}
+
+const mapDispatchToProps = {
+    getCourse: getCourseActionCreator,
+    updateCourse: updateCourseActionCreator
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(CourseManagement);

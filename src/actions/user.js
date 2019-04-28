@@ -11,7 +11,13 @@ export const USER_ACTION = {
     SIGN_UP_START: `${NAME_SPACE}/SIGN_UP_START`,
     SIGN_UP_SUCCESS: `${NAME_SPACE}/SIGN_UP_SUCCESS`,
     SIGN_UP_FAILURE: `${NAME_SPACE}/SIGN_UP_FAILURE`,
-    LOG_OUT: `${NAME_SPACE}/LOG_OUT`
+    LOG_OUT: `${NAME_SPACE}/LOG_OUT`,
+    GET_USER_LIST_START: `${NAME_SPACE}/GET_USER_LIST_START`,
+    GET_USER_LIST_SUCCESS: `${NAME_SPACE}/GET_USER_LIST_SUCCESS`,
+    GET_USER_LIST_FAILURE: `${NAME_SPACE}/GET_USER_LIST_FAILURE`,
+    DELETE_USER_START: `${NAME_SPACE}/DELETE_USER_START`,
+    DELETE_USER_SUCCESS: `${NAME_SPACE}/DELETE_USER_SUCCESS`,
+    DELETE_USER_FAILURE: `${NAME_SPACE}/DELETE_USER_FAILURE`
 };
 
 export const signInActionCreator = (payload) => ({
@@ -33,3 +39,10 @@ export const signUpActionCreator = (payload) => ({
 });
 
 export const logoutActionCreator = () => ({type: USER_ACTION.LOG_OUT});
+
+export const getUserListActionCreator = () => ({ type: USER_ACTION.GET_USER_LIST_START});
+
+export const deleteUserActionCreator = payload => ({
+    type: USER_ACTION.DELETE_USER_START,
+    payload
+})

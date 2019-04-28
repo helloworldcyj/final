@@ -1,9 +1,10 @@
 import React, { PureComponent } from 'react';
 import { withRouter } from 'react-router-dom';
 import { Button, Modal } from 'antd';
-import './index.scss';
 import PublichArticle from '../PublichArticle';
 import { renderTimestamp } from '../../utils/utils';
+import { CONFIGS } from '../../configs';
+import './index.scss';
 
 
 // 依靠article_id做查看时的跳转
@@ -33,8 +34,14 @@ class ArticleManageItem extends PureComponent {
     closeDeleteModal = () => this.setState({deleteModalVisible: false})
 
     handleDelete = () => {
-        console.log('delete it');
+        const { article: { articleId }, deleteArticle } = this.props;
+        deleteArticle({articleId})
         this.closeDeleteModal();
+    }
+
+    handleView = () => {
+        const { article: { articleId }, history } = this.props;
+        history.push(`${CONFIGS.articleDetail.path}?article_id=${articleId}`);
     }
 
     render() {
@@ -68,7 +75,7 @@ class ArticleManageItem extends PureComponent {
                     title="编辑"
                     className="article-manage-item-edit-modal"
                 >
-                    <PublichArticle article={article}/>
+                    <PublichArticle article={article} cb={this.closeEditModal}/>
                 </Modal>}
 
                 <Modal

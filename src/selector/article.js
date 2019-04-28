@@ -5,12 +5,12 @@ const articleSelector = state => state.articleReducer;
 
 export const articleDataSelector = createSelector(
     articleSelector,
-    article => article.data
+    article => _.reverse(_.sortBy(article.data, ["meta.publishTimestamp"]))
 )
 
 export const publishArticleSelector = createSelector(
-    articleSelector,
-    article => _.filter(article.data, item => item.status === 1)
+    articleDataSelector,
+    articles => _.filter(articles, item => item.status === 1)
 )
 
 export const articleCountSelector = createSelector(

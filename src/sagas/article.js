@@ -126,6 +126,13 @@ function* toggleArticleLike(action) {
     })
 }
 
+function* deleteAtticle(action) {
+    yield put({
+        type: ARTICLE_ACTION.DELETE_ARTICLE_SUCCESS,
+        payload: action.payload
+    })
+}
+
 export default function* saga() {
     yield takeLatest(ARTICLE_ACTION.GET_ARTICLE_LIST_START, getArticleList);
     yield takeLatest(ARTICLE_ACTION.GET_ARTICLE_TAGS_START, getArticleTags);
@@ -136,4 +143,5 @@ export default function* saga() {
     // admin
     yield takeLatest(ARTICLE_ACTION.PUBLISH_ARTICLE_START, publishArticle);
     yield takeLatest(ARTICLE_ACTION.UPDATE_ARTICLE_STATR, updateArticle);
+    yield takeLatest(ARTICLE_ACTION.DELETE_ARTICLE_START, deleteAtticle);
 }

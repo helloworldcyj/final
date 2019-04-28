@@ -31,24 +31,62 @@ class PublichArticle extends PureComponent {
         }
     }
 
+    static defaultProps = {
+        article: {}
+    }
+
     handleSubmit = (e) => {
-        const { publishArticle, form } = this.props;
+        const { publishArticle, saveArticle, form, article, cb } = this.props;
         e.preventDefault();
         form.validateFields((err, values) => {
             if (!err) {
+                if(article.articleId) {
+                    saveArticle({
+                        ...article,
+                        meta: {
+                            ...article.meta,
+                            wordCount: values.content.length,
+                            publishTimestamp: moment().unix()
+                        },
+                        ...values,
+                        status: 1
+                    });
+                    form.resetFields();
+                    cb&&cb();
+                    return;
+                }
                 publishArticle(values);
+                form.resetFields();
+                cb&&cb();
             }
         });
     }
 
     handleSave = () => {
-        const { publishArticle, form } = this.props;
+        const { publishArticle, saveArticle, form, article, cb } = this.props;
         form.validateFields((err, values) => {
             if (!err) {
+                if(article.articleId) {
+                    saveArticle({
+                        ...article,
+                        meta: {
+                            ...article.meta,
+                            wordCount: values.content.length,
+                            publishTimestamp: moment().unix()
+                        },
+                        ...values,
+                        status: 0
+                    });
+                    form.resetFields();
+                    cb&&cb();
+                    return;
+                }
                 publishArticle({
                     ...values,
                     status: 0
                 });
+                form.resetFields();
+                cb&&cb();
             }
         });
     }

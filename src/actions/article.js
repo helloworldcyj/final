@@ -77,3 +77,8 @@ export const updateArticleActionCreator = payload => ({
     type: ARTICLE_ACTION.UPDATE_ARTICLE_STATR,
     payload
 })
+
+export const deleteArticleActionCreator = payload => ({
+    type: ARTICLE_ACTION.DELETE_ARTICLE_START,
+    payload
+}) 

@@ -26,7 +26,7 @@ const TEMP_CONTENT = `
 const DEFAULT_STATE = {
     data: [ // 假后端存储
         {
-            articleId: 0,
+            articleId: 1,
             status: 1,
             title: '第一篇',
             content: TEMP_CONTENT,
@@ -34,7 +34,7 @@ const DEFAULT_STATE = {
             coverPhotoUrl: 'https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=3156671389,2646079670&fm=26&gp=0.jpg',
             tags: ['第一篇'],
             meta: {
-                publishTimestamp: 1507601410,
+                publishTimestamp: 1507611410,
                 wordCount: TEMP_CONTENT.length,
                 viewCount: 0,
                 commentCount: 0,
@@ -42,13 +42,13 @@ const DEFAULT_STATE = {
             },
             comments: [
                 {
-                    id: 0,
+                    id: 1,
                     userName: "用户一",
                     content: `<blockquote><pre>引用mf1389004071的发言:</pre>这个评论效果确实好很多, 赞</blockquote>`,
                     timestamp: 1555319157,
                 },
                 {
-                    id: 1,
+                    id: 2,
                     content: `<blockquote><pre>引用但丁的发言:</pre><blockquote><pre>引用mf1389004071的发言:</pre>这个评论效果确实好很多, 赞</blockquote>
                     再也不用纠结使用外部评论系统带来的各种体验不佳的问题了</blockquote>`,
                     userName: "用户三",
@@ -58,7 +58,7 @@ const DEFAULT_STATE = {
             likes: []
         },
         {
-            articleId: 1,
+            articleId: 2,
             status: 1,
             title: '第二篇',
             content: TEMP_CONTENT,
@@ -66,25 +66,7 @@ const DEFAULT_STATE = {
             coverPhotoUrl: 'https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=3156671389,2646079670&fm=26&gp=0.jpg',
             tags: ['第二篇'],
             meta: {
-                publishTimestamp: 1507601410,
-                wordCount: TEMP_CONTENT.length,
-                viewCount: 0,
-                commentCount: 0,
-                likeCount: 0,
-            },
-            comments: [],
-            likes: []
-        },
-        {
-            articleId: 2,
-            status: 1,
-            title: '第三篇',
-            content: TEMP_CONTENT,
-            summary: '第三篇',
-            coverPhotoUrl: 'https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=3156671389,2646079670&fm=26&gp=0.jpg',
-            tags: ['第三篇'],
-            meta: {
-                publishTimestamp: 1507601410,
+                publishTimestamp: 1507621410,
                 wordCount: TEMP_CONTENT.length,
                 viewCount: 0,
                 commentCount: 0,
@@ -96,13 +78,13 @@ const DEFAULT_STATE = {
         {
             articleId: 3,
             status: 1,
-            title: '第四篇',
+            title: '第三篇',
             content: TEMP_CONTENT,
-            summary: '第四篇',
+            summary: '第三篇',
             coverPhotoUrl: 'https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=3156671389,2646079670&fm=26&gp=0.jpg',
-            tags: ['第四篇'],
+            tags: ['第三篇'],
             meta: {
-                publishTimestamp: 1507601410,
+                publishTimestamp: 1507631410,
                 wordCount: TEMP_CONTENT.length,
                 viewCount: 0,
                 commentCount: 0,
@@ -114,13 +96,13 @@ const DEFAULT_STATE = {
         {
             articleId: 4,
             status: 1,
-            title: '第五篇',
+            title: '第四篇',
             content: TEMP_CONTENT,
-            summary: '第五篇',
+            summary: '第四篇',
             coverPhotoUrl: 'https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=3156671389,2646079670&fm=26&gp=0.jpg',
-            tags: ['第五篇'],
+            tags: ['第四篇'],
             meta: {
-                publishTimestamp: 1539137410,
+                publishTimestamp: 1507641410,
                 wordCount: TEMP_CONTENT.length,
                 viewCount: 0,
                 commentCount: 0,
@@ -132,13 +114,13 @@ const DEFAULT_STATE = {
         {
             articleId: 5,
             status: 1,
-            title: '第六篇',
+            title: '第五篇',
             content: TEMP_CONTENT,
-            summary: '第六篇',
+            summary: '第五篇',
             coverPhotoUrl: 'https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=3156671389,2646079670&fm=26&gp=0.jpg',
-            tags: ['第六篇'],
+            tags: ['第五篇'],
             meta: {
-                publishTimestamp: 1539137410,
+                publishTimestamp: 1539157410,
                 wordCount: TEMP_CONTENT.length,
                 viewCount: 0,
                 commentCount: 0,
@@ -149,6 +131,24 @@ const DEFAULT_STATE = {
         },
         {
             articleId: 6,
+            status: 1,
+            title: '第六篇',
+            content: TEMP_CONTENT,
+            summary: '第六篇',
+            coverPhotoUrl: 'https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=3156671389,2646079670&fm=26&gp=0.jpg',
+            tags: ['第六篇'],
+            meta: {
+                publishTimestamp: 1549137410,
+                wordCount: TEMP_CONTENT.length,
+                viewCount: 0,
+                commentCount: 0,
+                likeCount: 0,
+            },
+            comments: [],
+            likes: []
+        },
+        {
+            articleId: 7,
             status: 1,
             title: '第七篇',
             content: TEMP_CONTENT,
@@ -201,50 +201,27 @@ export default function reducer(state = DEFAULT_STATE, action) {
                 }
             })
         case ARTICLE_ACTION.UPDATE_ARTICLE_SUCCESS:
-            message.success('更改成功');
-            return update(state, {
-                data: (articles) => {
-                    return _.map(articles, article => {
-                        if(action.payload.articleId && article.articleId === action.payload.articleId) {
-                            return {
-                                articleId: state.data.length + 1,
-                                status: 1,
-                                meta: {
-                                    publishTimestamp: moment().unix(),
-                                    wordCount: action.payload.content.length,
-                                    viewCount: 0,
-                                    commentCount: 0,
-                                    likeCount: 0,
-                                },
-                                comments: [],
-                                likes: [],
-                                ...action.payload,
-                            }
-                        }else {
-                            return {
-                                articleId: state.data.length + 1,
-                                status: 1,
-                                meta: {
-                                    publishTimestamp: moment().unix(),
-                                    wordCount: action.payload.content.length,
-                                    viewCount: 0,
-                                    commentCount: 0,
-                                    likeCount: 0,
-                                },
-                                comments: [],
-                                likes: [],
-                                ...action.payload,
-                            }
-                        }
-                    })
-                }
-            })
+            message.success('编辑成功');
+            const tempData = _.filter(state.data, item => item.articleId !== action.payload.articleId);
+            return {
+                ...state,
+                data: [
+                    ...tempData,
+                    action.payload
+                ]
+            }
         case ARTICLE_ACTION.UPDATE_ARTICLE_SEARCH_CONDITION: 
             return update(state, {
                 queryCondition: {
                     $set: action.payload
                 }
             })
+        case ARTICLE_ACTION.DELETE_ARTICLE_SUCCESS:
+            const deleteTempData = _.filter(state.data, item => item.articleId !== action.payload.articleId);
+            return {
+                ...state,
+                data: deleteTempData
+            }
         case ARTICLE_ACTION.GET_ARTICLE_LIST_SUCCESS: 
             return update(state, {
                 articleList: {

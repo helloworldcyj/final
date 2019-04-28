@@ -1,5 +1,8 @@
 import React, { PureComponent } from 'react';
 import { Table } from 'antd';
+import { connect } from 'react-redux';
+import { userListSelector } from '../../selector/user';
+import { getUserListActionCreator, deleteUserActionCreator } from '../../actions/user';
 import './index.scss';
 
 const TableColumn = Table.Column;
@@ -8,7 +11,7 @@ class UserManagement extends PureComponent {
 
     deleteUser = (email) => {
         // Todo: 通过邮箱删除用户
-        console.log('email: ', email);
+        this.props.deleteUser({email})
     }
 
     renderOperation = (email) => {
@@ -18,20 +21,20 @@ class UserManagement extends PureComponent {
     }
 
     render() {
-        const { userList=[{ userName: 'xxx', email: 'webchen18@163.com', phoneNumber: '18621607062', introduction: "哈哈哈哈" }] } = this.props;
+        const { userList } = this.props;
         return (
             <Table dataSource={userList} pagination={false}>
                 <TableColumn
                     title="邮箱"
                     dataIndex="email"
-                    width="10%"
+                    width="33%"
                 />
                 <TableColumn
                     title="用户名"
-                    width="10%"
+                    width="33%"
                     dataIndex="userName"
                 />
-                <TableColumn
+                {/* <TableColumn
                     title="电话号码"
                     width="10%"
                     dataIndex="phoneNumber"
@@ -40,11 +43,11 @@ class UserManagement extends PureComponent {
                     title="自我介绍"
                     width="50%"
                     dataIndex="introduction"
-                />
+                /> */}
                 <TableColumn
                     title="操作"
-                    width="10%"
-                    dataIndex="introduction"
+                    width="33%"
+                    dataIndex="email"
                     render={this.renderOperation}
                 />
             </Table>
@@ -52,4 +55,15 @@ class UserManagement extends PureComponent {
     }
 }
 
-export default UserManagement;
+const mapStateToProps = state => {
+    return {
+        userList: userListSelector(state)
+    }
+}
+
+const mapDispathToProps = {
+    getUserlist: getUserListActionCreator,
+    deleteUser: deleteUserActionCreator
+}
+
+export default connect(mapStateToProps, mapDispathToProps)(UserManagement);

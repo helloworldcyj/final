@@ -1,56 +1,17 @@
 import React, { PureComponent } from 'react';
+import { connect } from 'react-redux';
 import _ from 'lodash';
 import { Modal } from 'antd';
 import CommentListItem from './CommentListItem';
 import CommentItem from '../CommentItem';
 import './index.scss';
+import { articleDataSelector } from '../../selector/article';
+import { updateArticleActionCreator } from '../../actions/article';
 
 class CommentManagement extends PureComponent {
 
     static defaultProps = {
-        list: [{
-            id: 0,
-            title: '文章标题',
-            comments: [
-                {
-                    id: 0,
-                    userName: "用户一",
-                    content: `<blockquote><pre>引用mf1389004071的发言:</pre>这个评论效果确实好很多, 赞</blockquote>`,
-                    timestamp: 1555319157,
-                },
-                {
-                    id: 1,
-                    content: `<blockquote><pre>引用但丁的发言:</pre><blockquote><pre>引用mf1389004071的发言:</pre>这个评论效果确实好很多, 赞</blockquote>
-                    再也不用纠结使用外部评论系统带来的各种体验不佳的问题了</blockquote>`,
-                    userName: "用户三",
-                    timestamp: 1555419157
-                },
-                {
-                    id: 2,
-                    userName: "用户一",
-                    content: "这是一条评论",
-                    timestamp: 1555319157,
-                },
-                {
-                    id: 3,
-                    content: "这又是一条评论",
-                    userName: "用户三",
-                    timestamp: 1555419157
-                },
-                {
-                    id: 4,
-                    userName: "用户一",
-                    content: "这是一条评论",
-                    timestamp: 1555319157,
-                },
-                {
-                    id: 5,
-                    content: "这又是一条评论",
-                    userName: "用户三",
-                    timestamp: 1555419157
-                }
-            ]
-        }]
+        list: []
     }
 
     constructor(props) {
@@ -90,9 +51,8 @@ class CommentManagement extends PureComponent {
 
     confirmEdit = () => {
         const { editItem, edit } = this.state;
-        // Todo: 等待接口
         if (edit) {
-            console.log('editItem: ', editItem);
+            this.props.updateArticle(editItem);
         }
         this.closeModal();
     }
@@ -126,4 +86,12 @@ class CommentManagement extends PureComponent {
     }
 }
 
-export default CommentManagement;
+const mapStateToProps = state => ({
+    list: articleDataSelector(state)
+})
+
+const mapDispatchToProps = {
+    updateArticle: updateArticleActionCreator
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(CommentManagement);

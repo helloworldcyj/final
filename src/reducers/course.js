@@ -1,6 +1,7 @@
 
 import update from 'immutability-helper'
 import { COURSE_ACTION } from '../actions/course';
+
 // type 0为管理员 1为普通用户
 const DEFAULT_STATE = {
     data: [
@@ -17,6 +18,12 @@ export default function reducer(state = DEFAULT_STATE, action) {
         case COURSE_ACTION.GET_COURSE_SUCCESS:
             return update(state, {
                 course: {
+                    $set: action.payload
+                }
+            })
+        case  COURSE_ACTION.UPDATE_COURSE_SUCCESS:
+            return update(state, {
+                data: {
                     $set: action.payload
                 }
             })

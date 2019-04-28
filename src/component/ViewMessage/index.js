@@ -1,90 +1,21 @@
 import React, { PureComponent } from 'react';
+import { connect } from 'react-redux';
 import { Timeline } from 'antd';
 import _ from 'lodash';
 import { renderTimestamp } from '../../utils/utils';
+import { messagesSelector } from '../../selector/message';
+import { getMessageActionCreator } from '../../actions/message'
 
 const TimelineItem = Timeline.Item;
 
 class ViewMessage extends PureComponent {
+
+    componentDidMount() {
+        this.props.getMessages();
+    }
+
     render() {
-        const {messages = [{
-            content: 'test',
-            timestamp: 1555319157,
-            userName: 'xxx',
-            email: 'webchen18@163.com'
-        },
-        {
-            content: 'test',
-            timestamp: 1555319157,
-            userName: 'xxx',
-            email: 'webchen18@163.com'
-        },
-        {
-            content: 'test',
-            timestamp: 1555319157,
-            userName: 'xxx',
-            email: 'webchen18@163.com'
-        },
-        {
-            content: 'test',
-            timestamp: 1555319157,
-            userName: 'xxx',
-            email: 'webchen18@163.com'
-        },
-        {
-            content: 'test',
-            timestamp: 1555319157,
-            userName: 'xxx',
-            email: 'webchen18@163.com'
-        },
-        {
-            content: 'test',
-            timestamp: 1555319157,
-            userName: 'xxx',
-            email: 'webchen18@163.com'
-        },
-        {
-            content: 'test',
-            timestamp: 1555319157,
-            userName: 'xxx',
-            email: 'webchen18@163.com'
-        },
-        {
-            content: 'test',
-            timestamp: 1555319157,
-            userName: 'xxx',
-            email: 'webchen18@163.com'
-        },
-        {
-            content: 'test',
-            timestamp: 1555319157,
-            userName: 'xxx',
-            email: 'webchen18@163.com'
-        },
-        {
-            content: 'test',
-            timestamp: 1555319157,
-            userName: 'xxx',
-            email: 'webchen18@163.com'
-        },
-        {
-            content: 'test',
-            timestamp: 1555319157,
-            userName: 'xxx',
-            email: 'webchen18@163.com'
-        },
-        {
-            content: 'test',
-            timestamp: 1555319157,
-            userName: 'xxx',
-            email: 'webchen18@163.com'
-        },
-        {
-            content: 'test',
-            timestamp: 1555319157,
-            userName: 'xxx',
-            email: 'webchen18@163.com'
-        }]} = this.props;
+        const {messages} = this.props;
         return (
             <div className="viwe-message">
                 <Timeline>
@@ -105,4 +36,14 @@ class ViewMessage extends PureComponent {
     }
 }
 
-export default ViewMessage;
+const mapStateToProps = state => {
+    return {
+        messages: messagesSelector(state)
+    }
+}
+
+const mapDisPatchToProps = {
+    getMessages: getMessageActionCreator
+}
+
+export default connect(mapStateToProps, mapDisPatchToProps)(ViewMessage);

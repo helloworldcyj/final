@@ -38,7 +38,21 @@ function* signUp(action) {
     message.success("注册成功!");
 }
 
+function* getUserList() {
+    // message.success('')
+}
+
+function* deleteUser(action) {
+    message.success('删除用户成功');
+    yield put({
+        type: USER_ACTION.DELETE_USER_SUCCESS,
+        payload: action.payload
+    })
+}
+
 export default function* saga() {
     yield takeLatest(USER_ACTION.SIGN_IN_START, signIn);
     yield takeLatest(USER_ACTION.SIGN_UP_START, signUp);
+    yield takeLatest(USER_ACTION.GET_USER_LIST_START, getUserList);
+    yield takeLatest(USER_ACTION.DELETE_USER_START, deleteUser);
 }

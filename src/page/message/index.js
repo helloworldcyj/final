@@ -1,5 +1,8 @@
 import React, { PureComponent } from 'react';
+import { connect } from 'react-redux';
 import { Form, Icon, Button, Input } from 'antd';
+import moment from 'moment';
+import { addMessgaeActionCreator } from '../../actions/message';
 import './index.scss';
 
 const FormItem = Form.Item;
@@ -7,14 +10,14 @@ const FormItem = Form.Item;
 class Message extends PureComponent {
 
     handleSubmit = (e) => {
+        const { addMessage, form } = this.props;
         e.preventDefault();
-        this.props.form.validateFields((err, values) => {
+        form.validateFields((err, values) => {
             if (!err) {
-                // Todo:
-                console.log('Received values of form: ', values);
-                // this.setState({
-
-                // });
+                addMessage({
+                    timestamp: moment().unix(),
+                    ...values
+                })
             }
         });
     }
@@ -39,7 +42,7 @@ class Message extends PureComponent {
                     )}
                 </FormItem>
                 <FormItem>
-                    {getFieldDecorator('message', {
+                    {getFieldDecorator('content', {
                         rules: [{ required: true, message: '请输入留言，不可为空' }],
                     })(
                         <Input prefix={<Icon type="message" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="请输入留言，不可为空" />
@@ -59,4 +62,13 @@ class Message extends PureComponent {
     }
 }
 
-export default Form.create()(Message);
+const mapStateToProps = state => { 
+    return {
+    };
+}
+
+const mapDispatchToProps = {
+    addMessage: addMessgaeActionCreator
+}
+
+export default Form.create(mapStateToProps, mapDispatchToProps)(connect()(Message));
