@@ -3,7 +3,7 @@ import { Route } from 'react-router-dom';
 import Nav from '../../component/Nav';
 import './index.scss';
 import Footer from '../../component/Footer';
-import BeautyAvatar from '../../component/BeatyAvatar';
+import Avatar from '../../component/Avatar';
 import ArticleTags from '../../component/ArticleTags';
 
 
@@ -21,7 +21,7 @@ class MainLayout extends PureComponent {
                         <div className="body-right">
                             <div className="name-avatar">
                                 <div className="avatar-wrapper">
-                                    <BeautyAvatar/>
+                                    <Avatar/>
                                 </div>
                                 <div className="name">陈阳吉</div>
                             </div>

@@ -9,13 +9,11 @@ import './index.scss'
 const TimelineItem = AntTimeline.Item;
 
 class Timeline extends PureComponent {
-
     handleClick = (data) => {
         const { click, articleId } = data;
         const { history } = this.props;
-        click && history.push(`${CONFIGS.articleDetail.path}?articleId=${articleId}`)
+        click && history.push(`${CONFIGS.articleDetail.path}?article_id=${articleId}`)
     }
-
     render() {
         const { data, history, root } = this.props;
         return (

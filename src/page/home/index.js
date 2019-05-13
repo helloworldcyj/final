@@ -1,35 +1,50 @@
 import React, { PureComponent } from 'react';
 import { Link } from 'react-router-dom';
 import Sakura from '../../component/Sakura';
-import logo from '../../assets/avatar.jpg';
+import Avatar from '../../component/Avatar';
+import { CONFIGS } from '../../configs';
+import _ from 'lodash';
 import './index.scss';
 
-class Home extends PureComponent {
+const HOME_NAV = [
+    {
+        to: CONFIGS.article.path,
+        display: CONFIGS.article.display
+    },
+    {
+        to: CONFIGS.archive.path,
+        display: CONFIGS.archive.display
+    },
+    {
+        to: CONFIGS.course.path,
+        display: CONFIGS.course.display
+    },
+    {
+        to: CONFIGS.message.path,
+        display: CONFIGS.message.display
+    },
+    {
+        to: CONFIGS.about.path,
+        display: CONFIGS.about.display
+    }
+];
 
+class Home extends PureComponent {
   render() {
-    
     return (
       <div className="home">
         <Sakura/>
         <div className="content">
-            <img className="home-logo" src={logo} alt="final logo" />
+            <Avatar 
+                centered={true}
+            />
             <div className="home-body">
                 <div className="list">
-                    <Link className="link" to={`/article`}>
-                        文章
-                    </Link>
-                    <Link className="link" to={`/archive`}>
-                        归档
-                    </Link>
-                    <Link className="link" to={`/course`}>
-                        历程
-                    </Link>
-                    <Link className="link" to={`/message`}>
-                        留言
-                    </Link>
-                    <Link className="link" to={`/about`}>
-                        关于
-                    </Link>
+                    {_.map(HOME_NAV, ({to, display}) => (
+                        <Link className="link" to={to} key={to}>
+                            {display}
+                        </Link>
+                    ))}
                 </div>
             </div>
         </div>

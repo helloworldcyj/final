@@ -69,9 +69,10 @@ class ArticleDetail extends PureComponent {
     }
 
     toggleLike = () => {
-        this.messageInfo();
         const { toggleLike, user: { email } = {}, article: {articleId} } = this.props;
-        toggleLike({
+        this.messageInfo();
+        // 这里的bug不知道如何解 暫時放著
+        email && toggleLike({
             email,
             articleId
         });

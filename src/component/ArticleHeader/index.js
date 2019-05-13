@@ -3,7 +3,7 @@ import classnames from 'classnames';
 import _ from 'lodash';
 import moment from 'moment';
 import './index.scss';
-import BeautyAvatar from '../BeatyAvatar';
+import Avatar from '../Avatar';
 import { TIMESTAMP_FORMAT } from '../../configs';
 
 const CLASS_PREFIX = "article-header";
@@ -25,7 +25,7 @@ class ArticleHeader extends PureComponent {
         return (
             <div className={CLASS_PREFIX}>
                 <div className={`${CLASS_PREFIX}-left`}>
-                    <BeautyAvatar size="small"/>
+                    <Avatar size="small"/>
                     <div className={`${CLASS_PREFIX}-meta-wrapper`}>
                         <div className={`${CLASS_PREFIX}-name`}>陈阳吉</div>
                         <div className={`${CLASS_PREFIX}-meta`}>

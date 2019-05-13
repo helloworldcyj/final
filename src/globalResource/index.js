@@ -11,6 +11,7 @@ class GlobalResource extends PureComponent {
 
     render() {
         const { tags } = this.props;
+        // 此处其实应该是有个单独的标志位去标志全局资源加载情况的
 
         return tags.length > 0 ? this.props.children : null;
     }
