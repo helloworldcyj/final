@@ -23,10 +23,10 @@ const HOME_NAV = [
         to: CONFIGS.message.path,
         display: CONFIGS.message.display
     },
-    {
-        to: CONFIGS.about.path,
-        display: CONFIGS.about.display
-    }
+    // {
+    //     to: CONFIGS.about.path,
+    //     display: CONFIGS.about.display
+    // }
 ];
 
 class Home extends PureComponent {

@@ -67,10 +67,10 @@ const ROUTES = [
         path: CONFIGS.message.path,
         component: Message
     },
-    {
-        path: CONFIGS.about.path,
-        component: About
-    }
+    // {
+    //     path: CONFIGS.about.path,
+    //     component: About
+    // }
 ];
 
 class App extends Component {

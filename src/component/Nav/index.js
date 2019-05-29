@@ -33,16 +33,16 @@ const LINKS = [
         ...message,
         icon: 'icon-message'
     },
-    {
-        ...about,
-        icon: 'icon-about'
-    }
+    // {
+    //     ...about,
+    //     icon: 'icon-about'
+    // }
 ]
 
 
 class Nav extends PureComponent {
 
-    renderAdminUser = (imgSrc, userName) => (
+    renderUserInfo = (imgSrc, userName) => (
         <div className="nav-user">
             <img src={imgSrc} alt="avatar" className="nav-user-avatar"/>
             <div className="nav-user-name">{userName}</div>
@@ -65,7 +65,7 @@ class Nav extends PureComponent {
         const imgSrc = type === 0 ? AdminAvatar : DefaultAvatar;
         return (
             <Popover content={this.renderContent()} trigger="hover" overlayClassName="nav-overlay">
-               {this.renderAdminUser(imgSrc, userName)}
+               {this.renderUserInfo(imgSrc, userName)}
             </Popover>
         )
     }

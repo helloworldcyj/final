@@ -14,10 +14,12 @@ class SignInModal extends PureComponent {
 
     handleSubmit = (e) => {
         e.preventDefault();
-        this.props.form.validateFields((err, values) => {
+        const { admin, form, signInAction } = this.props;
+        form.validateFields((err, values) => {
             if (!err) {
-                this.props.signInAction({
-                    ...values
+                signInAction({
+                    ...values,
+                    admin
                 });
             }
         });

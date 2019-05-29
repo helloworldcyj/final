@@ -65,6 +65,8 @@ class Admin extends PureComponent {
                 <Sakura/>
                 <SignInModal
                     visible={!!!user}
+                    // 其实这里应该用scene传字符串'admin'的 懒得弄了 over
+                    admin={true}
                 />
             </>
         )

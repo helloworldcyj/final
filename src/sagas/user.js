@@ -5,12 +5,16 @@ import { USER_ACTION } from '../actions/user';
 import { userListSelector } from '../selector/user';
 
 function* signIn(action) {
-    const { userName, password } = action.payload;
+    const { userName, password, admin } = action.payload;
     // 这里本应进行后端通信 外加try catch
     const users = yield select(userListSelector);
     const user = _.find(users, user => user.userName === userName);
     if(user) {
         if(user.password === password) {
+            if(admin && user.type === 1) {
+                message.error("账号未非管理员账号");
+                return;
+            }
             message.success("登录成功!");
             yield put({
                 type: USER_ACTION.SIGN_IN_SUCCESS,

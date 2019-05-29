@@ -71,4 +71,4 @@ const mapDispatchToProps = {
     addMessage: addMessgaeActionCreator
 }
 
-export default Form.create(mapStateToProps, mapDispatchToProps)(connect()(Message));
+export default Form.create(mapStateToProps, mapDispatchToProps)(connect(null, mapDispatchToProps)(Message));

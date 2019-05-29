@@ -11,21 +11,13 @@ import { showSignInModalActionCreator, closeSignInModalActionCreator, showSignUp
 
 class Sign extends PureComponent {
 
-    renderButtons = () => {
-        const { showSignInModal, showSignUpModal } = this.props;
-        return (
-            <>
-                <Button className='sign-in' icon='login' type='primary' onClick={showSignInModal}>登录</Button>
-                <Button className='sign-up' icon='login' type='danger' onClick={showSignUpModal}>注册</Button>
-            </>
-        );
-    }
 
     render() {
-        const { className, signInModalVisible, signUpModalVisible, closeSignInModal, closeSignUpModal } = this.props;
+        const { showSignInModal, showSignUpModal, className, signInModalVisible, signUpModalVisible, closeSignInModal, closeSignUpModal } = this.props;
         return (
             <div className={classnames('sign', className)}>
-               {this.renderButtons()}
+                <Button className='sign-in' icon='login' type='primary' onClick={showSignInModal}>登录</Button>
+                <Button className='sign-up' icon='login' type='danger' onClick={showSignUpModal}>注册</Button>
                 <SignInModal
                     visible={signInModalVisible}
                     onCancel={closeSignInModal}
