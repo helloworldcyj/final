@@ -16,3 +16,5 @@ export function getQueryStringByName(name) {
 export function renderTimestamp(timestamp) {
     return moment.unix(timestamp).format(TIMESTAMP_FORMAT)
 } 
+
+export const TEST = 'TEST';
