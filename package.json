@@ -122,10 +122,6 @@
       "jsx",
       "node"
     ],
-    "watchPlugins": [
-      "C:\\Users\\BigPotato\\Desktop\\demo\\node_modules\\jest-watch-typeahead\\filename.js",
-      "C:\\Users\\BigPotato\\Desktop\\demo\\node_modules\\jest-watch-typeahead\\testname.js"
-    ]
   },
   "babel": {
     "presets": [
